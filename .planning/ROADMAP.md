@@ -17,6 +17,14 @@ Transform the existing client-side React agreement form into a full e-signing pl
 
 **Dependencies:** None (first phase)
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 01-01-PLAN.md -- Project restructure + Tailwind v4 migration
+- [ ] 01-02-PLAN.md -- Supabase database schema + client setup
+- [ ] 01-03-PLAN.md -- Auth provider + React Router + protected routes
+- [ ] 01-04-PLAN.md -- Agreement CRUD + Zustand store + admin form
+
 **Requirements:**
 - INFRA-01: Backend with API endpoints for agreement CRUD
 - INFRA-02: Agreement data persists in database across sessions
@@ -116,7 +124,7 @@ Transform the existing client-side React agreement form into a full e-signing pl
 
 | Phase | Name | Requirements | Status |
 |-------|------|:------------:|--------|
-| 1 | Backend Foundation | 8 | Pending |
+| 1 | Backend Foundation | 8 | Planned (4 plans) |
 | 2 | Shareable Links + Client Signing | 14 | Pending |
 | 3 | PDF Generation + Delivery | 8 | Pending |
 | 4 | Admin Dashboard | 6 | Pending |
@@ -124,3 +132,4 @@ Transform the existing client-side React agreement form into a full e-signing pl
 
 ---
 *Roadmap created: 2026-02-18*
+*Phase 1 planned: 2026-02-18*
