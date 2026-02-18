@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Triple J Auto Investment Agreement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              forestGreen: '#1A472A',
+              gold: '#C5A059',
+              alertRed: '#8B1A1A',
+              charcoal: '#2C2C2C',
+              lightGray: '#F5F5F5',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Lora', 'serif'],
+            },
+            screens: {
+              'print': {'raw': 'print'},
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      
+      /* Base Input Styles */
+      .legal-input {
+        border-bottom: 1px solid #cbd5e1;
+        outline: none;
+        background: transparent;
+        transition: border-color 0.2s;
+        width: 100%;
+        padding: 2px 0;
+        border-radius: 0; /* Remove iOS rounded corners */
+      }
+      .legal-input:focus {
+        border-bottom-color: #1A472A;
+      }
+
+      /* Print Styles (Browser Print) */
+      @media print {
+        @page { 
+          margin: 0.5in; 
+          size: auto;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .page-break {
+          page-break-before: always;
+        }
+        .avoid-break {
+          page-break-inside: avoid;
+        }
+        /* Force desktop-like grid for print */
+        .md\:grid-cols-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+        .md\:p-\[0\.75in\] {
+          padding: 0 !important; /* Let @page handle margins */
+        }
+      }
+
+      /* PDF Generation Force-Desktop Styles 
+         These are applied when the .force-desktop class is added to the container
+         during html2pdf generation to simulate a desktop viewport on mobile. 
+      */
+      .force-desktop {
+        width: 800px !important; /* Approx 8.5in at 96dpi */
+        margin: 0 auto !important;
+        padding: 0.5in !important; /* Internal padding for the PDF visual */
+        background-color: white !important;
+      }
+
+      /* Grid & Layout Overrides */
+      .force-desktop .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+      .force-desktop .md\:grid-cols-12 {
+        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+      }
+      .force-desktop .md\:col-span-2 {
+        grid-column: span 2 / span 2 !important;
+      }
+      
+      /* Spacing & Sizing Overrides */
+      .force-desktop .md\:gap-12 { gap: 3rem !important; }
+      .force-desktop .md\:gap-4 { gap: 1rem !important; }
+      .force-desktop .md\:mb-10 { margin-bottom: 2.5rem !important; }
+      .force-desktop .md\:mb-12 { margin-bottom: 3rem !important; }
+      
+      /* Flex Overrides */
+      .force-desktop .md\:flex-row { flex-direction: row !important; }
+      .force-desktop .md\:items-end { align-items: flex-end !important; }
+      .force-desktop .md\:items-center { align-items: center !important; }
+      .force-desktop .md\:justify-start { justify-content: flex-start !important; }
+      .force-desktop .md\:flex-none { flex: none !important; }
+      
+      /* Visibility Overrides */
+      .force-desktop .md\:hidden { display: none !important; }
+      .force-desktop .hidden.md\:grid { display: grid !important; }
+      .force-desktop .hidden.md\:inline { display: inline !important; }
+      
+      /* Width Overrides */
+      .force-desktop .md\:w-48 { width: 12rem !important; }
+      .force-desktop .md\:w-32 { width: 8rem !important; }
+      .force-desktop .md\:w-64 { width: 16rem !important; }
+      .force-desktop .md\:w-auto { width: auto !important; }
+
+      /* Typography */
+      .force-desktop .md\:text-3xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+      .force-desktop .md\:text-4xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+      .force-desktop .md\:text-base { font-size: 1rem !important; line-height: 1.5rem !important; }
+      .force-desktop .md\:text-sm { font-size: 0.875rem !important; line-height: 1.25rem !important; }
+      .force-desktop .md\:text-xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+
+      /* Table/Border Specifics */
+      .force-desktop .md\:border-none { border-style: none !important; }
+      .force-desktop .md\:p-1 { padding: 0.25rem !important; }
+      .force-desktop .md\:pb-0 { padding-bottom: 0 !important; }
+
+      /* Input Cleanup for PDF */
+      .force-desktop input {
+        background-color: transparent !important;
+      }
+      .force-desktop .no-print {
+        display: none !important;
+      }
+      
+      /* Signature Pad Specifics in PDF */
+      .force-desktop .signature-pad-placeholder {
+        display: none !important; /* Hide "Tap to Sign" button */
+      }
+      .force-desktop .signature-pad-empty-line {
+        display: block !important; /* Show empty line if manual sign needed */
+        width: 100%;
+        height: 4rem;
+        border-bottom: 2px solid #2C2C2C;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "lucide-react": "https://esm.sh/lucide-react@^0.574.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-gray-100 text-charcoal font-serif">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
