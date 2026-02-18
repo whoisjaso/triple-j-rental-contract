@@ -1,0 +1,731 @@
+# Architecture Patterns
+
+**Domain:** Shareable e-signing vehicle rental agreement platform
+**Project:** Triple J Auto Investment LLC
+**Researched:** 2026-02-18
+**Overall confidence:** HIGH
+
+---
+
+## Current State Analysis
+
+The existing application is a pure client-side React/TypeScript/Vite SPA that renders a multi-page vehicle rental agreement form. Key observations:
+
+- **No backend exists.** All data lives in React state (`useState`) and vanishes on page close.
+- **PDF generation is client-side** via `html2pdf.js` loaded from a CDN script tag (not npm). Quality is limited by the browser's rendering capabilities.
+- **Signatures are captured as canvas data URLs** (base64 PNG) using a custom `SignaturePad` component -- this is good and reusable.
+- **The `AgreementData` type** in `types.ts` is comprehensive and already defines the full data shape (104 lines covering renter info, vehicle info, rental terms, payment, insurance acknowledgments, signatures, condition checklist, and additional drivers). This type becomes the backbone of the database schema.
+- **No routing exists.** The app is a single-page monolith (`App.tsx` is ~620 lines rendering everything).
+
+The architecture must add backend capabilities while preserving this working frontend.
+
+---
+
+## Recommended Architecture
+
+### High-Level System Diagram
+
+```
++------------------------------------------------------------------+
+|                        FRONTEND (React SPA)                       |
+|                                                                   |
+|  /admin/*          /agreement/:token         /agreement/new       |
+|  Admin Dashboard    Client-Facing Form       Admin Creates New    |
+|  (auth required)    (public, token-gated)    Agreement             |
+|                                                                   |
++-------------------------------|-----------------------------------+
+                                |
+                          REST API calls
+                          (fetch to /api/*)
+                                |
++-------------------------------|-----------------------------------+
+|                      BACKEND (Express.js)                         |
+|                                                                   |
+|  /api/auth/*         /api/agreements/*        /api/notifications/* |
+|  Login/logout        CRUD + token lookup      Send email/SMS      |
+|  Session mgmt        PDF generation           Notification status |
+|                                                                   |
++-------------------------------|-----------------------------------+
+                                |
+                 +--------------+--------------+
+                 |              |              |
+            +---------+   +---------+   +------------+
+            | SQLite  |   |Puppeteer|   | External   |
+            |   DB    |   | (PDF)   |   | Services   |
+            +---------+   +---------+   +------------+
+                                        | Resend     |
+                                        | (email)    |
+                                        | Twilio     |
+                                        | (SMS)      |
+                                        +------------+
+```
+
+### Monorepo Project Structure
+
+```
+triple-j-auto-investment-agreement/
+  |
+  +-- client/                    # Existing React SPA (moved here)
+  |     +-- src/
+  |     |     +-- components/    # Existing: InputLine, Section, SignaturePad, etc.
+  |     |     +-- pages/         # NEW: route-level components
+  |     |     |     +-- AdminLogin.tsx
+  |     |     |     +-- AdminDashboard.tsx
+  |     |     |     +-- AgreementForm.tsx    # Refactored from App.tsx
+  |     |     |     +-- AgreementView.tsx    # Read-only signed version
+  |     |     +-- hooks/         # NEW: API hooks (useAgreement, useAuth)
+  |     |     +-- lib/           # NEW: API client, types
+  |     |     +-- App.tsx        # Becomes router shell
+  |     |     +-- types.ts       # Shared types (keep existing)
+  |     +-- vite.config.ts
+  |     +-- package.json
+  |
+  +-- server/                    # NEW: Express backend
+  |     +-- src/
+  |     |     +-- index.ts       # Express app entry
+  |     |     +-- routes/
+  |     |     |     +-- auth.ts
+  |     |     |     +-- agreements.ts
+  |     |     |     +-- notifications.ts
+  |     |     +-- middleware/
+  |     |     |     +-- auth.ts          # Session/JWT validation
+  |     |     |     +-- errorHandler.ts
+  |     |     +-- services/
+  |     |     |     +-- pdf.ts           # Puppeteer PDF generation
+  |     |     |     +-- email.ts         # Resend integration
+  |     |     |     +-- sms.ts           # Twilio integration
+  |     |     |     +-- token.ts         # Nanoid link generation
+  |     |     +-- db/
+  |     |     |     +-- schema.ts        # Drizzle ORM schema
+  |     |     |     +-- migrations/      # Auto-generated by drizzle-kit
+  |     |     |     +-- index.ts         # DB connection (better-sqlite3)
+  |     |     +-- templates/
+  |     |           +-- agreement.html   # Handlebars/EJS template for PDF
+  |     +-- package.json
+  |
+  +-- shared/                    # NEW: Shared types between client and server
+  |     +-- types.ts             # AgreementData, enums, validation schemas
+  |     +-- package.json
+  |
+  +-- package.json               # Root workspace config
+```
+
+**Why this structure:** The client and server are separate packages in a single repo (pnpm workspaces or npm workspaces). This keeps the existing Vite dev server intact while adding the Express server alongside it. Shared types prevent drift between frontend and backend. The structure is simple enough for a single developer to navigate.
+
+---
+
+## Component Boundaries
+
+| Component | Responsibility | Communicates With | Technology |
+|-----------|---------------|-------------------|------------|
+| **React SPA** | UI rendering, form interaction, client-side validation | Backend API via fetch | React 19, React Router, Vite |
+| **Express API** | Business logic, data persistence, auth, orchestration | DB, external services, serves SPA in prod | Express.js, TypeScript |
+| **SQLite Database** | Persistent storage of agreements, admin credentials, audit log | Express API only (embedded) | better-sqlite3 + Drizzle ORM |
+| **PDF Service** | Server-side HTML-to-PDF rendering | Called by Express API routes | Puppeteer (headless Chromium) |
+| **Email Service** | Transactional email delivery (agreement links, signed copies) | Called by Express API routes | Resend API |
+| **SMS Service** | Text message notifications | Called by Express API routes | Twilio API |
+| **Token Service** | Unique shareable link generation and validation | Called by Express API, stored in DB | nanoid |
+
+### Boundary Rules
+
+1. **The React SPA never touches the database directly.** All data flows through the Express API.
+2. **External services (email, SMS) are only called from the server.** API keys never reach the client.
+3. **PDF generation happens server-side only.** The client requests a PDF; the server renders it and returns the file or a download URL.
+4. **The shared types package is the single source of truth** for the `AgreementData` shape. Both client and server import from it.
+
+---
+
+## Data Flow
+
+### Flow 1: Admin Creates and Sends an Agreement
+
+```
+Admin (browser)                   Express API                     External
+     |                                |                              |
+     |-- POST /api/auth/login ------->|                              |
+     |<-- 200 + session cookie -------|                              |
+     |                                |                              |
+     |-- POST /api/agreements ------->|                              |
+     |   { renter, vehicle, terms }   |-- INSERT into SQLite         |
+     |                                |-- nanoid() -> token          |
+     |                                |-- Store token in agreements  |
+     |<-- 201 { id, token, link } ----|                              |
+     |                                |                              |
+     |-- POST /api/agreements/:id/ -->|                              |
+     |   send                         |-- Resend: email with link -->|
+     |                                |-- Twilio: SMS with link ---->|
+     |<-- 200 { sent: true } ---------|                              |
+```
+
+### Flow 2: Client Opens Shareable Link and Signs
+
+```
+Client (browser)                  Express API                     Storage
+     |                                |                              |
+     |-- GET /agreement/:token ------>|                              |
+     |   (React Router loads page)    |                              |
+     |                                |                              |
+     |-- GET /api/agreements/         |                              |
+     |   by-token/:token ------------>|-- SELECT WHERE token=:token  |
+     |                                |<-- agreement data -----------|
+     |<-- 200 { agreement data } -----|                              |
+     |                                |                              |
+     |   [Client fills in remaining   |                              |
+     |    fields, draws signature]    |                              |
+     |                                |                              |
+     |-- PUT /api/agreements/:id/ --->|                              |
+     |   sign                         |-- UPDATE signatures, status  |
+     |   { signatures, initials }     |-- Record IP, timestamp       |
+     |                                |-- Trigger PDF generation     |
+     |                                |     (Puppeteer, async)       |
+     |<-- 200 { signed: true } -------|                              |
+     |                                |                              |
+     |                                |-- Generate PDF (Puppeteer)   |
+     |                                |-- Store PDF path in DB       |
+     |                                |-- Email signed PDF to admin  |
+     |                                |-- Email signed PDF to renter |
+```
+
+### Flow 3: PDF Generation (Server-Side)
+
+```
+Express API                       Puppeteer                    File System
+     |                                |                              |
+     |-- Load agreement data from DB  |                              |
+     |-- Render HTML template with    |                              |
+     |   agreement data (Handlebars)  |                              |
+     |-- page.setContent(html) ------>|                              |
+     |-- page.pdf({format:'Letter'})->|                              |
+     |<-- PDF Buffer -----------------|                              |
+     |-- Save buffer to disk -------->|                              |
+     |-- Store file path in DB        |                         ./pdfs/:id.pdf
+     |-- Return buffer to caller      |                              |
+```
+
+**Why Puppeteer over client-side html2pdf:** The existing client-side `html2pdf.js` approach has known quality issues -- it screenshots the DOM using html2canvas and converts to PDF, which produces blurry text at scale, breaks across page boundaries, and renders differently on different browsers/devices. Puppeteer uses real Chromium rendering with native PDF printing, producing crisp vector text and reliable page breaks with `@page` CSS. For a legal agreement document, print quality matters.
+
+---
+
+## Database Schema (Drizzle ORM + SQLite)
+
+```typescript
+// server/src/db/schema.ts
+
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+
+export const agreements = sqliteTable('agreements', {
+  id:             integer('id').primaryKey({ autoIncrement: true }),
+  token:          text('token').notNull().unique(),       // nanoid, used in shareable URL
+  status:         text('status').notNull().default('draft'),
+                  // 'draft' | 'sent' | 'viewed' | 'signed' | 'expired'
+
+  // Full agreement data stored as JSON (mirrors AgreementData type)
+  data:           text('data', { mode: 'json' }).notNull(),
+
+  // Signature audit fields (ESIGN Act compliance)
+  signedAt:       text('signed_at'),                      // ISO timestamp
+  signerIp:       text('signer_ip'),                      // IP at signing
+  signerUserAgent:text('signer_user_agent'),               // Browser UA
+
+  // PDF storage
+  pdfPath:        text('pdf_path'),                        // Path to generated PDF
+
+  // Notification tracking
+  emailSentAt:    text('email_sent_at'),
+  smsSentAt:      text('sms_sent_at'),
+
+  // Timestamps
+  createdAt:      text('created_at').notNull().default('CURRENT_TIMESTAMP'),
+  updatedAt:      text('updated_at').notNull().default('CURRENT_TIMESTAMP'),
+});
+
+export const admin = sqliteTable('admin', {
+  id:             integer('id').primaryKey({ autoIncrement: true }),
+  username:       text('username').notNull().unique(),
+  passwordHash:   text('password_hash').notNull(),         // bcrypt hash
+});
+
+export const auditLog = sqliteTable('audit_log', {
+  id:             integer('id').primaryKey({ autoIncrement: true }),
+  agreementId:    integer('agreement_id').references(() => agreements.id),
+  action:         text('action').notNull(),
+                  // 'created' | 'sent' | 'viewed' | 'signed' | 'pdf_generated' | 'downloaded'
+  metadata:       text('metadata', { mode: 'json' }),      // IP, UA, extra context
+  createdAt:      text('created_at').notNull().default('CURRENT_TIMESTAMP'),
+});
+```
+
+**Why JSON for agreement data:** The `AgreementData` type has 100+ fields across deeply nested objects. Normalizing this into relational tables would create 10+ tables for a single-user app with low volume. Storing as JSON with the full `AgreementData` shape is pragmatic: you query by `id` or `token`, not by individual fields. The structured columns (`status`, `token`, `signedAt`) are the fields you actually filter and sort on.
+
+**Why SQLite:** This is a single-user, low-volume application. SQLite is zero-configuration, requires no separate database server, deploys as a single file, and handles thousands of concurrent reads. For a car rental business with maybe 5-20 agreements per week, SQLite is not just sufficient -- it is ideal. It eliminates an entire infrastructure dependency (no Postgres/MySQL server to manage).
+
+---
+
+## Authentication Architecture
+
+### Single Admin User (Keep It Simple)
+
+This is a one-person business. The architecture does NOT need user registration, role-based access control, OAuth, or any multi-tenant features.
+
+```
+Admin Auth Flow:
+1. Admin visits /admin/login
+2. Submits username + password
+3. Server validates against bcrypt hash in admin table
+4. Server sets HTTP-only session cookie (express-session + SQLite session store)
+5. All /api/* admin routes check session middleware
+6. Session expires after configurable timeout (e.g., 8 hours)
+```
+
+**Why session cookies over JWT:** For a single-admin app with a single server, session cookies are simpler, more secure by default (HTTP-only, no client-side token storage), and trivially revocable. JWT adds complexity that only pays off with distributed servers or third-party auth -- neither applies here.
+
+### Client-Facing Auth (Token-Gated, Not Login)
+
+Renters who receive a shareable link do NOT create accounts or log in. Their "authentication" is possession of the unique token in the URL:
+
+```
+https://agreements.thetriplejauto.com/agreement/Vk3xR9mPqZ2nL
+                                                  ^^^^^^^^^^^^^
+                                                  nanoid token
+```
+
+- The token is 21 characters, URL-safe, cryptographically random (nanoid).
+- The token is single-use for signing (status transitions from `sent` -> `signed`).
+- Once signed, the link shows a read-only confirmation, not the editable form.
+- Tokens can be expired by the admin from the dashboard.
+
+**Why nanoid over UUID:** Nanoid produces shorter, URL-friendly tokens (21 chars vs 36 chars for UUID). Both have equivalent collision resistance (~126 bits of randomness). Shorter URLs are friendlier in SMS messages where character count matters.
+
+---
+
+## API Route Design
+
+```
+Auth Routes:
+  POST   /api/auth/login            # Admin login
+  POST   /api/auth/logout           # Admin logout
+  GET    /api/auth/me               # Check session validity
+
+Agreement Routes (admin-only):
+  GET    /api/agreements             # List all agreements (dashboard)
+  POST   /api/agreements             # Create new agreement
+  GET    /api/agreements/:id         # Get agreement by ID
+  PUT    /api/agreements/:id         # Update agreement (admin edit)
+  DELETE /api/agreements/:id         # Delete agreement
+  POST   /api/agreements/:id/send    # Send agreement link via email/SMS
+  GET    /api/agreements/:id/pdf     # Download generated PDF
+
+Agreement Routes (public, token-gated):
+  GET    /api/agreements/by-token/:token     # Get agreement data for signing
+  PUT    /api/agreements/by-token/:token/sign  # Submit signatures
+
+Notification Routes (admin-only):
+  POST   /api/agreements/:id/notify/email    # Resend email
+  POST   /api/agreements/:id/notify/sms      # Resend SMS
+```
+
+---
+
+## PDF Generation Architecture
+
+### Recommended Approach: Puppeteer with HTML Template
+
+```
+1. Maintain a standalone HTML template (server/src/templates/agreement.html)
+   that mirrors the visual layout of the React form but is static HTML.
+   Use Handlebars for data interpolation.
+
+2. When PDF is requested:
+   a. Load agreement data from database
+   b. Render Handlebars template with data (produces complete HTML string)
+   c. Launch Puppeteer (or use a persistent browser instance)
+   d. page.setContent(renderedHtml, { waitUntil: 'networkidle0' })
+   e. page.pdf({ format: 'Letter', printBackground: true, margin: {...} })
+   f. Save PDF buffer to disk (./pdfs/{agreement_id}_{timestamp}.pdf)
+   g. Update agreement record with PDF path
+   h. Return buffer for download or email attachment
+```
+
+### Why NOT ReactDOMServer.renderToString
+
+While it is technically possible to render the React components to HTML on the server and feed that to Puppeteer, this approach creates a hard coupling between your frontend component code and your PDF generation pipeline. If a CSS class changes in the frontend, the PDF breaks. If a component uses browser APIs, the server render fails. A dedicated HTML template for PDF is more maintainable: the form and the PDF are allowed to diverge visually (the PDF can be optimized for print while the form is optimized for interaction).
+
+### Puppeteer Lifecycle Management
+
+For a low-volume app, launching a Puppeteer browser per PDF request is acceptable. For slightly better performance, maintain a singleton browser instance:
+
+```typescript
+// server/src/services/pdf.ts
+let browser: Browser | null = null;
+
+async function getBrowser(): Promise<Browser> {
+  if (!browser) {
+    browser = await puppeteer.launch({ headless: true });
+  }
+  return browser;
+}
+
+async function generatePdf(agreementData: AgreementData): Promise<Buffer> {
+  const b = await getBrowser();
+  const page = await b.newPage();
+  try {
+    const html = renderTemplate(agreementData);
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+    const pdf = await page.pdf({
+      format: 'Letter',
+      printBackground: true,
+      margin: { top: '0.5in', bottom: '0.5in', left: '0.5in', right: '0.5in' }
+    });
+    return Buffer.from(pdf);
+  } finally {
+    await page.close();
+  }
+}
+```
+
+---
+
+## E-Signature Legal Compliance (ESIGN Act)
+
+The U.S. ESIGN Act (2000) and Texas UETA make electronic signatures legally binding when these conditions are met. The architecture must capture:
+
+| Requirement | How Architecture Addresses It |
+|-------------|-------------------------------|
+| **Intent to sign** | Explicit "I agree" action + signature canvas interaction |
+| **Consent to electronic process** | Consent disclosure on the signing page before form loads |
+| **Association of signature with document** | Signature data stored in same DB record as agreement data |
+| **Record retention** | Generated PDF stored on server; copies emailed to both parties |
+| **Audit trail** | `audit_log` table records: created, sent, viewed, signed timestamps with IP and user agent |
+| **Ability to retain record** | Renter receives PDF via email; admin can download from dashboard |
+
+**Critical architectural requirement:** The `signerIp`, `signerUserAgent`, and `signedAt` fields on the agreement record, plus the `audit_log` entries, together form the evidence chain that the signature is genuine. These must be populated server-side (not from client-submitted data) to be trustworthy.
+
+---
+
+## Notification Architecture
+
+### Email (Resend)
+
+```typescript
+// server/src/services/email.ts
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+async function sendAgreementLink(to: string, renterName: string, link: string) {
+  await resend.emails.send({
+    from: 'Triple J Auto <agreements@thetriplejauto.com>',
+    to,
+    subject: 'Your Vehicle Rental Agreement - Triple J Auto Investment',
+    html: renderEmailTemplate({ renterName, link }),
+  });
+}
+
+async function sendSignedCopy(to: string, renterName: string, pdfBuffer: Buffer) {
+  await resend.emails.send({
+    from: 'Triple J Auto <agreements@thetriplejauto.com>',
+    to,
+    subject: 'Signed Agreement Copy - Triple J Auto Investment',
+    html: renderConfirmationTemplate({ renterName }),
+    attachments: [{ filename: `Agreement_${renterName}.pdf`, content: pdfBuffer }],
+  });
+}
+```
+
+**Why Resend over Nodemailer:** Resend is an API-first email service that requires no SMTP configuration, has built-in deliverability, and works with custom domains (thetriplejauto.com). Nodemailer requires configuring an SMTP relay (Gmail, which has rate limits and spam issues, or a separate service anyway). Resend's free tier (100 emails/day) is more than sufficient for this volume. The owner already has thetriplejauto.com, making custom domain setup straightforward.
+
+### SMS (Twilio)
+
+```typescript
+// server/src/services/sms.ts
+import twilio from 'twilio';
+
+const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+
+async function sendAgreementSms(to: string, renterName: string, link: string) {
+  await client.messages.create({
+    body: `Hi ${renterName}, your vehicle rental agreement from Triple J Auto is ready to sign: ${link}`,
+    from: process.env.TWILIO_PHONE_NUMBER,
+    to,
+  });
+}
+```
+
+**Why Twilio:** It is the industry standard for SMS in Node.js, has a generous trial, and the integration is about 10 lines of code. For low volume (a few messages per week), cost is negligible.
+
+---
+
+## Development Environment
+
+### Vite Proxy Configuration
+
+During development, the React SPA runs on Vite's dev server (port 3000) and proxies API calls to the Express server (port 4000):
+
+```typescript
+// client/vite.config.ts
+export default defineConfig({
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+      },
+    },
+  },
+  plugins: [react()],
+});
+```
+
+### Production Serving
+
+In production, Express serves the built Vite assets as static files AND handles API routes:
+
+```typescript
+// server/src/index.ts (production mode)
+import express from 'express';
+import path from 'path';
+
+const app = express();
+
+// API routes
+app.use('/api', apiRouter);
+
+// Serve Vite build output
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// SPA fallback -- all non-API routes serve index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+});
+```
+
+This means in production, a single `node server/dist/index.js` process serves everything. No separate frontend deployment needed.
+
+---
+
+## Patterns to Follow
+
+### Pattern 1: Service Layer Separation
+
+**What:** Business logic lives in `services/`, route handlers are thin.
+
+**Why:** Route handlers parse requests and call services. Services contain the actual logic (generate PDF, send email, validate token). This makes services testable without HTTP and keeps routes clean.
+
+```typescript
+// GOOD: Thin route, logic in service
+router.post('/:id/send', authMiddleware, async (req, res) => {
+  const agreement = await agreementService.getById(req.params.id);
+  const link = agreementService.getShareableLink(agreement.token);
+  await emailService.sendAgreementLink(agreement.data.renter.email, link);
+  await smsService.sendAgreementSms(agreement.data.renter.phonePrimary, link);
+  await agreementService.updateStatus(agreement.id, 'sent');
+  res.json({ sent: true });
+});
+```
+
+### Pattern 2: Status State Machine
+
+**What:** Agreement status transitions are explicit and enforced.
+
+```
+draft --> sent --> viewed --> signed
+  |                           |
+  +--------> expired <--------+
+```
+
+**Why:** Prevents invalid states (e.g., signing an already-signed agreement, sending a draft that's incomplete). Each transition is validated server-side.
+
+### Pattern 3: Async PDF Generation with Status Polling
+
+**What:** PDF generation is triggered asynchronously. The client polls or receives a webhook when complete.
+
+**Why:** Puppeteer PDF generation takes 2-5 seconds. For the signing flow, this happens after the client submits signatures, so the user sees "Agreement signed! Your PDF copy will be emailed shortly." rather than waiting.
+
+---
+
+## Anti-Patterns to Avoid
+
+### Anti-Pattern 1: Storing Signatures as Base64 in JSON
+
+**What:** Embedding large base64 signature images directly in the JSON data column.
+
+**Why bad:** A single signature PNG data URL is ~50-200KB. With renter + company rep + additional drivers, that is 200-800KB of base64 per agreement row. This bloats the SQLite database rapidly and slows all queries that touch the `data` column.
+
+**Instead:** Store signature images as separate files on disk (`./signatures/{agreement_id}_renter.png`). Store file paths in the agreement data, not the raw base64.
+
+### Anti-Pattern 2: Building a Full RBAC System
+
+**What:** Implementing roles, permissions, user registration for a single-admin app.
+
+**Why bad:** Over-engineering. This is one person managing a small fleet. Adding registration, role checks, and permission guards triples the auth complexity for zero benefit.
+
+**Instead:** Single admin row in the database. One bcrypt-hashed password. One session. If a second admin is needed later, add another row -- that is it.
+
+### Anti-Pattern 3: Real-Time WebSocket Updates
+
+**What:** Adding WebSocket connections so the admin dashboard updates live when a client signs.
+
+**Why bad:** Adds complexity (socket server, reconnection logic, state sync) for an app where the admin checks the dashboard a few times a day. At this volume, a page refresh or 30-second polling interval is perfectly adequate.
+
+**Instead:** Simple polling on the admin dashboard, or manual refresh.
+
+### Anti-Pattern 4: Microservices Architecture
+
+**What:** Splitting PDF generation, email, SMS, and the API into separate deployable services.
+
+**Why bad:** This is a single-user, low-volume application. Microservices add deployment complexity, inter-service communication overhead, and operational burden that is wholly unjustified.
+
+**Instead:** Everything in one Express process. The service layer provides logical separation without physical separation.
+
+---
+
+## Scalability Considerations
+
+| Concern | Current Scale (1-5/week) | At 50/week | At 500/week |
+|---------|--------------------------|------------|-------------|
+| **Database** | SQLite file, single process -- perfect | SQLite still fine (handles thousands of writes/sec) | Consider migrating to PostgreSQL |
+| **PDF generation** | Puppeteer singleton, sequential generation | Still fine; queue if needed | Add a job queue (BullMQ + Redis) |
+| **Email delivery** | Resend free tier (100/day) | Resend free tier still sufficient | Resend paid tier ($20/mo) |
+| **SMS delivery** | Twilio pay-per-message (~$0.01/msg) | ~$2/week | ~$20/week |
+| **File storage** | Local disk (./pdfs/, ./signatures/) | Local disk (< 1GB/year) | Consider S3 or similar |
+| **Hosting** | Single VPS or Railway/Render | Same | Same, maybe bigger instance |
+
+**Bottom line:** The recommended architecture handles 10x-100x current volume without any changes. Scaling concerns are irrelevant for the foreseeable future of this business.
+
+---
+
+## Suggested Build Order (Dependencies)
+
+The build order follows strict dependency chains. Each phase depends on the previous one.
+
+### Phase 1: Backend Foundation + Database
+
+**Build:** Express server, SQLite + Drizzle ORM schema, project restructure (client/server split)
+
+**Why first:** Everything else depends on having a running server and persistent storage. The frontend refactoring (adding React Router) also happens here.
+
+**Outputs:** Working API that can CRUD agreements, Vite proxy configured, shared types package.
+
+### Phase 2: Shareable Links + Client Signing Flow
+
+**Build:** Token generation (nanoid), public agreement routes, client-facing form that loads data from API and submits signatures.
+
+**Why second:** This is the core value proposition -- sending a link to a client who can sign remotely. Depends on Phase 1 (API + DB) being complete.
+
+**Outputs:** Admin can create an agreement, get a shareable link, client can open link, fill in their parts, and sign.
+
+### Phase 3: Server-Side PDF Generation
+
+**Build:** Puppeteer integration, HTML template for agreement, PDF storage, download route.
+
+**Why third:** PDF generation depends on having complete signed agreement data (Phase 2). It is also a prerequisite for email notifications (Phase 4), since you want to attach the signed PDF.
+
+**Outputs:** Signed agreements produce high-quality PDFs stored on the server. Admin can download from dashboard.
+
+### Phase 4: Email + SMS Notifications
+
+**Build:** Resend integration, Twilio integration, notification triggers, email templates.
+
+**Why fourth:** Depends on Phase 2 (need shareable links to include in notifications) and Phase 3 (need PDF to attach to post-signing confirmation emails).
+
+**Outputs:** Admin can send agreement link via email/SMS. After signing, both parties receive the signed PDF via email.
+
+### Phase 5: Admin Dashboard + Auth
+
+**Build:** Login page, session-based auth, dashboard UI (list/search/filter agreements, view status, download PDFs).
+
+**Why fifth (not first):** While auth seems foundational, building the dashboard last means you already have all the API endpoints it needs to consume. During Phases 1-4, the admin can use direct API calls or a minimal UI. Attempting to build the dashboard before the API is complete leads to rework.
+
+**Outputs:** Polished admin interface for managing all agreements.
+
+### Phase 6: Polish + ESIGN Compliance Hardening
+
+**Build:** Audit logging, consent disclosure flow, e-signature evidence chain, error handling, input validation (Zod).
+
+**Why last:** Compliance hardening requires the full flow to exist first. You cannot audit a signing flow that does not exist yet.
+
+**Outputs:** Production-ready system with legal compliance.
+
+### Dependency Graph
+
+```
+Phase 1 (Backend + DB)
+    |
+    +-- Phase 2 (Shareable Links + Signing)
+    |       |
+    |       +-- Phase 3 (PDF Generation)
+    |       |       |
+    |       |       +-- Phase 4 (Email + SMS)
+    |       |
+    |       +-- Phase 5 (Admin Dashboard + Auth)
+    |
+    +-- Phase 6 (Polish + Compliance) -- depends on ALL above
+```
+
+Note: Phases 4 and 5 could be built in parallel since they depend on different aspects of Phases 1-3.
+
+---
+
+## Deployment Architecture
+
+For a simple, single-user app, the recommended deployment is:
+
+```
+Railway.app or Render.com
+  |
+  +-- Single Node.js service
+  |     - Express serves API + static React build
+  |     - SQLite database file (persistent volume)
+  |     - Generated PDFs stored on persistent volume
+  |     - Puppeteer runs in same container (needs Chromium)
+  |
+  +-- Custom domain: agreements.thetriplejauto.com
+  |   (subdomain of existing thetriplejauto.com)
+  |
+  +-- Environment variables:
+        RESEND_API_KEY
+        TWILIO_SID
+        TWILIO_AUTH_TOKEN
+        TWILIO_PHONE_NUMBER
+        SESSION_SECRET
+        ADMIN_USERNAME (seed only)
+        ADMIN_PASSWORD_HASH (seed only)
+```
+
+**Why Railway/Render over Vercel:** Vercel is optimized for serverless and does not support persistent SQLite files or long-running Puppeteer processes. Railway and Render offer persistent volumes and long-running Node.js processes, which is exactly what this architecture requires.
+
+**Why a subdomain:** Keep the agreement system separate from the marketing site (thetriplejauto.com). The subdomain `agreements.thetriplejauto.com` makes URLs clean and professional: `agreements.thetriplejauto.com/agreement/Vk3xR9mPqZ2nL`.
+
+---
+
+## Sources
+
+### Architecture Patterns
+- [React Architecture Tradeoffs: SPA, SSR, or RSC](https://reacttraining.com/blog/react-architecture-spa-ssr-rsc) -- MEDIUM confidence
+- [Node.js and Express in 2026](https://www.nucamp.co/blog/node.js-and-express-in-2026-backend-javascript-for-full-stack-developers) -- MEDIUM confidence
+- [React + Express Monorepo with Vite Proxy](https://medium.com/@amolakapadi/connecting-react-vite-frontend-to-express-backend-using-proxy-step-by-step-guide-7eea23608727) -- MEDIUM confidence
+
+### Database
+- [Node.js Built-in SQLite Module](https://blog.logrocket.com/using-built-in-sqlite-module-node-js/) -- MEDIUM confidence
+- [Drizzle ORM SQLite Getting Started](https://orm.drizzle.team/docs/get-started-sqlite) -- HIGH confidence (official docs)
+- [Node.js ORMs in 2025](https://thedataguy.pro/blog/2025/12/nodejs-orm-comparison-2025/) -- MEDIUM confidence
+
+### PDF Generation
+- [Puppeteer PDF Generation Guide](https://pptr.dev/guides/pdf-generation) -- HIGH confidence (official docs)
+- [Puppeteer HTML to PDF with Node.js](https://blog.risingstack.com/pdf-from-html-node-js-puppeteer/) -- MEDIUM confidence
+- [Generate PDF from React Components](https://www.jujens.eu/posts/en/2021/Sep/26/generate-pdf-from-react/) -- LOW confidence (2021)
+- [Top Node.js PDF Generation Libraries 2025](https://pdfbolt.com/blog/top-nodejs-pdf-generation-libraries) -- MEDIUM confidence
+
+### Authentication & Tokens
+- [Nanoid - GitHub](https://github.com/ai/nanoid) -- HIGH confidence (official repo)
+- [JWT Authentication in Express](https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs) -- MEDIUM confidence
+
+### Notifications
+- [Twilio SMS with Node.js and Express](https://www.twilio.com/en-us/blog/server-notifications-node-express) -- HIGH confidence (official Twilio)
+- [Resend vs Nodemailer comparison](https://devdiwan.medium.com/goodbye-nodemailer-why-i-switched-to-resend-for-sending-emails-in-node-js-55e5a0dba899) -- MEDIUM confidence
+
+### Legal / E-Signature
+- [ESIGN Act Overview - Adobe](https://www.adobe.com/acrobat/business/resources/esign-act.html) -- HIGH confidence
+- [US Electronic Signature Laws - Docusign](https://www.docusign.com/products/electronic-signature/learn/esign-act-ueta) -- HIGH confidence
+- [Electronic Signature Legal Requirements](https://www.purduegloballawschool.edu/blog/news/e-signatures-legal-requirements) -- HIGH confidence
