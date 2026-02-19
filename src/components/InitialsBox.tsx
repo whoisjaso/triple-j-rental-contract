@@ -10,7 +10,7 @@ export const InitialsBox: React.FC<InitialsBoxProps> = ({ value, onChange, label
   return (
     <div className="flex items-end justify-end mt-4">
       <div className="flex items-center gap-2">
-        <span className="font-bold text-sm font-sans text-forestGreen">{label}:</span>
+        <span className="font-bold text-sm font-sans text-forest-green">{label}:</span>
         <input 
           type="text" 
           value={value} 

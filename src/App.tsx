@@ -132,7 +132,7 @@ const App: React.FC = () => {
           type="button"
           onClick={handlePrint}
           disabled={isGeneratingPdf}
-          className="cursor-pointer flex items-center justify-center gap-2 bg-forestGreen text-white px-4 py-3 md:px-6 rounded-full shadow-lg hover:bg-green-900 transition-colors font-sans font-bold text-sm md:text-base"
+          className="cursor-pointer flex items-center justify-center gap-2 bg-forest-green text-white px-4 py-3 md:px-6 rounded-full shadow-lg hover:bg-green-900 transition-colors font-sans font-bold text-sm md:text-base"
         >
           <Printer size={18} />
           <span className="hidden md:inline">Print</span>
@@ -154,11 +154,11 @@ const App: React.FC = () => {
         <div className="flex flex-col justify-center min-h-[10.5in] md:min-h-[10in]">
           
           <header className="text-center mb-8 md:mb-10 border-b-4 border-gold pb-6">
-            <h1 className="text-xl md:text-3xl font-bold font-sans text-forestGreen tracking-wide mb-1">TRIPLE J AUTO INVESTMENT LLC</h1>
+            <h1 className="text-xl md:text-3xl font-bold font-sans text-forest-green tracking-wide mb-1">TRIPLE J AUTO INVESTMENT LLC</h1>
             <div className="text-xs md:text-sm font-sans text-gray-600 space-y-1">
               <p>Texas Dealer License: P171632</p>
               <p>8774 Almeda Genoa Road, Houston, TX 77075</p>
-              <div className="flex flex-col md:flex-row justify-center items-center gap-1 md:gap-4 mt-2 font-bold text-forestGreen">
+              <div className="flex flex-col md:flex-row justify-center items-center gap-1 md:gap-4 mt-2 font-bold text-forest-green">
                 <span>281-253-3602</span>
                 <span className="hidden md:inline text-gold">|</span>
                 <span>triplejautoinvestment@gmail.com</span>
@@ -167,7 +167,7 @@ const App: React.FC = () => {
           </header>
 
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-4xl font-bold font-sans text-forestGreen uppercase mb-6">Vehicle Rental Agreement</h2>
+            <h2 className="text-2xl md:text-4xl font-bold font-sans text-forest-green uppercase mb-6">Vehicle Rental Agreement</h2>
             <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-12">
               <InputLine label="Agreement Number" value={data.agreementNumber} onChange={v => setData({...data, agreementNumber: v})} width="w-full md:w-48" />
               <InputLine label="Date of Agreement" value={data.agreementDate} onChange={v => setData({...data, agreementDate: v})} width="w-full md:w-48" />
@@ -182,7 +182,7 @@ const App: React.FC = () => {
             <p className="text-justify mb-4 leading-relaxed">
               This Agreement is governed by the laws of the State of Texas. Any dispute arising from this Agreement shall be resolved exclusively in the courts of Harris County, Texas.
             </p>
-            <p className="font-bold text-forestGreen text-justify">
+            <p className="font-bold text-forest-green text-justify">
               This Agreement supersedes all prior verbal or written representations. No modifications to this Agreement are valid unless executed in writing and signed by an authorized representative of the Company.
             </p>
           </Section>
@@ -211,7 +211,7 @@ const App: React.FC = () => {
               <InputLine label="Employer Name" value={data.renter.employerName} onChange={v => update('renter', 'employerName', v)} />
               <InputLine label="Monthly Income (Gross)" value={data.renter.monthlyIncome} onChange={v => update('renter', 'monthlyIncome', v)} />
             </div>
-            <p className="text-xs md:text-sm italic font-bold text-alertRed mt-4">
+            <p className="text-xs md:text-sm italic font-bold text-alert-red mt-4">
               Renter must present a valid, non-expired Texas Driver License and proof of full-coverage automobile insurance at the time of vehicle pickup. Failure to provide either will result in cancellation of this Agreement.
             </p>
           </Section>
@@ -227,7 +227,7 @@ const App: React.FC = () => {
               <InputLine label="Fuel Level" value={data.vehicle.fuelLevel} onChange={v => update('vehicle', 'fuelLevel', v)} />
               <InputLine label="Known Pre-Existing Damage" value={data.vehicle.damage} onChange={v => update('vehicle', 'damage', v)} className="col-span-1 md:col-span-2" />
             </div>
-            <div className="bg-lightGray p-4 rounded-sm">
+            <div className="bg-light-gray p-4 rounded-sm">
               <p className="font-bold text-sm mb-2">Vehicle Condition Acknowledgment:</p>
               <p className="text-xs md:text-sm mb-4">
                 Renter acknowledges that they have personally inspected the Vehicle prior to taking possession and confirm that the Vehicle is in acceptable condition, mechanically operational, and free of unreported damage except as noted above. Photos documenting the Vehicle's condition at the time of pickup are attached to and made part of this Agreement.
@@ -243,7 +243,7 @@ const App: React.FC = () => {
         {/* SECTION 4 */}
         <Section title="Rental Term & Payment Schedule" number="SECTION 4">
           <div className="mb-6">
-            <h3 className="font-bold text-forestGreen mb-3">4.1 Rental Period</h3>
+            <h3 className="font-bold text-forest-green mb-3">4.1 Rental Period</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               <InputLine label="Start Date" value={data.rentalTerm.startDate} onChange={v => update('rentalTerm', 'startDate', v)} type="date" />
               <InputLine label="End Date" value={data.rentalTerm.endDate} onChange={v => update('rentalTerm', 'endDate', v)} type="date" />
@@ -259,7 +259,7 @@ const App: React.FC = () => {
                      {data.rentalTerm.ratePeriod === 'custom' && (
                        <input 
                          type="text" 
-                         className="border-b border-charcoal bg-transparent w-24 focus:outline-none ml-1 text-forestGreen font-bold"
+                         className="border-b border-charcoal bg-transparent w-24 focus:outline-none ml-1 text-forest-green font-bold"
                          value={data.rentalTerm.customRatePeriod}
                          onChange={(e) => update('rentalTerm', 'customRatePeriod', e.target.value)}
                          placeholder="e.g. bi-weekly"
@@ -272,7 +272,7 @@ const App: React.FC = () => {
           </div>
 
           <div className="mb-6">
-            <h3 className="font-bold text-forestGreen mb-3">4.2 Payment Terms</h3>
+            <h3 className="font-bold text-forest-green mb-3">4.2 Payment Terms</h3>
             <div className="border border-gray-300 rounded overflow-hidden">
               <div className="bg-gray-100 p-2 font-bold text-xs uppercase hidden md:grid md:grid-cols-2 gap-4">
                 <span>Fee Description</span>
@@ -284,7 +284,7 @@ const App: React.FC = () => {
                 <span className="font-bold md:font-normal">Vehicle Cleaning Fee (if applicable)</span> <InputLine value={data.payment.cleaningFee} onChange={v => update('payment', 'cleaningFee', v)} />
                 <span className="font-bold md:font-normal">Insurance Surcharge</span> <InputLine value={data.payment.insuranceSurcharge} onChange={v => update('payment', 'insuranceSurcharge', v)} />
                 <span className="font-bold md:font-normal">GPS Vehicle Safety System Fee</span> <InputLine value={data.payment.gpsFee} onChange={v => update('payment', 'gpsFee', v)} />
-                <span className="font-bold text-forestGreen">Total Due at Signing</span> <InputLine value={data.payment.totalDue} onChange={v => update('payment', 'totalDue', v)} className="font-bold" />
+                <span className="font-bold text-forest-green">Total Due at Signing</span> <InputLine value={data.payment.totalDue} onChange={v => update('payment', 'totalDue', v)} className="font-bold" />
                 <span className="font-bold md:font-normal">Recurring Payment Amount</span> <InputLine value={data.payment.recurringAmount} onChange={v => update('payment', 'recurringAmount', v)} />
               </div>
             </div>
@@ -295,13 +295,13 @@ const App: React.FC = () => {
           </div>
 
           <div className="mb-4">
-            <h3 className="font-bold text-forestGreen mb-3">4.3 Grace Period & Late Payment Penalties</h3>
+            <h3 className="font-bold text-forest-green mb-3">4.3 Grace Period & Late Payment Penalties</h3>
             <p className="text-sm mb-3">The Company provides a three (3) calendar day grace period following each scheduled payment due date. If full payment is not received by 11:59 PM CST on the third (3rd) calendar day following the due date, the following penalties shall apply automatically:</p>
             <ul className="list-disc pl-5 text-sm space-y-2 mb-4">
-              <li><strong className="text-alertRed">Late Fee:</strong> Twenty dollars ($20.00) per calendar day.</li>
-              <li><strong className="text-alertRed">Cumulative Late Fees:</strong> Accrue without cap until paid.</li>
-              <li><strong className="text-alertRed">Returned Payment Fee:</strong> Fifty dollars ($50.00) for declined/returned payments.</li>
-              <li><strong className="text-alertRed">Collection Costs:</strong> Renter responsible for all legal and collection fees.</li>
+              <li><strong className="text-alert-red">Late Fee:</strong> Twenty dollars ($20.00) per calendar day.</li>
+              <li><strong className="text-alert-red">Cumulative Late Fees:</strong> Accrue without cap until paid.</li>
+              <li><strong className="text-alert-red">Returned Payment Fee:</strong> Fifty dollars ($50.00) for declined/returned payments.</li>
+              <li><strong className="text-alert-red">Collection Costs:</strong> Renter responsible for all legal and collection fees.</li>
             </ul>
             <p className="text-sm font-bold mb-4">Renter acknowledges that timely payment is essential to this Agreement. Failure to pay constitutes a material breach.</p>
             <AcknowledgmentBox 
@@ -315,20 +315,20 @@ const App: React.FC = () => {
         {/* SECTION 5 */}
         <Section title="Insurance & Liability Requirements" number="SECTION 5" critical>
           <div className="mb-4">
-             <h3 className="font-bold text-forestGreen text-xs md:text-sm uppercase mb-2">5.1 Mandatory Insurance</h3>
+             <h3 className="font-bold text-forest-green text-xs md:text-sm uppercase mb-2">5.1 Mandatory Insurance</h3>
              <p className="text-justify mb-2">Renter is REQUIRED to maintain valid, active full-coverage automobile insurance meeting Texas minimums (30/60/25) plus Comprehensive and Collision coverage on the rental Vehicle. The policy must remain active for the entire Rental Period.</p>
           </div>
           <div className="mb-4">
-             <h3 className="font-bold text-forestGreen text-xs md:text-sm uppercase mb-2">5.2 Proof of Insurance</h3>
+             <h3 className="font-bold text-forest-green text-xs md:text-sm uppercase mb-2">5.2 Proof of Insurance</h3>
              <p className="text-justify mb-2">Renter must provide proof of insurance at pickup. Lapse or cancellation of insurance constitutes an immediate material breach, authorizing immediate Vehicle Recovery.</p>
           </div>
           <div className="mb-4">
-             <h3 className="font-bold text-alertRed text-xs md:text-sm uppercase mb-2">5.3 Liability & Indemnification</h3>
+             <h3 className="font-bold text-alert-red text-xs md:text-sm uppercase mb-2">5.3 Liability & Indemnification</h3>
              <p className="font-bold text-justify mb-2 uppercase">Renter assumes full and complete liability for the Vehicle from the moment of pickup until the moment the Vehicle is returned to and physically accepted by the Company.</p>
              <p className="text-justify mb-2">This includes collision, theft, vandalism, third-party claims, tickets, and tolls. <strong>INDEMNIFICATION:</strong> Renter agrees to indemnify, defend, and hold harmless Triple J Auto Investment LLC against all claims arising from Renter's use of the Vehicle.</p>
           </div>
           <div className="mb-4">
-             <h3 className="font-bold text-forestGreen text-xs md:text-sm uppercase mb-2">5.4 No Liability of Company</h3>
+             <h3 className="font-bold text-forest-green text-xs md:text-sm uppercase mb-2">5.4 No Liability of Company</h3>
              <p className="text-justify uppercase text-xs">The Company makes no warranties regarding the Vehicle's fitness. The Company is not liable for consequential damages.</p>
           </div>
           <AcknowledgmentBox 
@@ -349,7 +349,7 @@ const App: React.FC = () => {
             <strong>Consent:</strong> By signing this Agreement, Renter provides full, voluntary, informed, and irrevocable consent to the use of the VSRS. The VSRS is Company property.
           </p>
           <p className="text-justify mb-3">
-            <strong className="text-alertRed">TAMPERING PENALTY:</strong> If Renter tampers with, disables, or removes the VSRS:
+            <strong className="text-alert-red">TAMPERING PENALTY:</strong> If Renter tampers with, disables, or removes the VSRS:
           </p>
           <ul className="list-disc pl-5 mb-3 space-y-1">
             <li>Immediate termination of Agreement & Forfeiture of Security Deposit.</li>
@@ -475,7 +475,7 @@ const App: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-8 avoid-break">
             <div className="space-y-6">
-              <h4 className="font-bold text-forestGreen uppercase text-sm border-b border-forestGreen pb-1">Renter Signature</h4>
+              <h4 className="font-bold text-forest-green uppercase text-sm border-b border-forest-green pb-1">Renter Signature</h4>
               <InputLine label="Printed Name" value={data.signatures.renterName} onChange={v => update('signatures', 'renterName', v)} />
               
               <SignaturePad 
@@ -487,7 +487,7 @@ const App: React.FC = () => {
               <InputLine label="Date" value={data.signatures.renterDate} onChange={v => update('signatures', 'renterDate', v)} />
             </div>
             <div className="space-y-6">
-              <h4 className="font-bold text-forestGreen uppercase text-sm border-b border-forestGreen pb-1">Company Representative</h4>
+              <h4 className="font-bold text-forest-green uppercase text-sm border-b border-forest-green pb-1">Company Representative</h4>
               <InputLine label="Printed Name" value={data.signatures.companyRepName} onChange={v => update('signatures', 'companyRepName', v)} />
               <InputLine label="Title" value={data.signatures.companyRepTitle} onChange={v => update('signatures', 'companyRepTitle', v)} />
               <InputLine label="Signature" value={data.signatures.companyRepSig} onChange={v => update('signatures', 'companyRepSig', v)} className="font-script text-xl" />
@@ -542,7 +542,7 @@ const App: React.FC = () => {
           <p className="text-sm mb-4">No person other than the Renter may operate the Vehicle unless listed below.</p>
           <div className="grid grid-cols-1 gap-6">
             <div className="border p-4 rounded bg-gray-50">
-              <p className="font-bold text-forestGreen mb-2">Additional Driver #1</p>
+              <p className="font-bold text-forest-green mb-2">Additional Driver #1</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <InputLine label="Name" value={data.additionalDrivers.d1Name} onChange={v => update('additionalDrivers', 'd1Name', v)} />
                 <InputLine label="DOB" value={data.additionalDrivers.d1Dob} onChange={v => update('additionalDrivers', 'd1Dob', v)} />
@@ -560,7 +560,7 @@ const App: React.FC = () => {
             </div>
             
             <div className="border p-4 rounded bg-gray-50">
-              <p className="font-bold text-forestGreen mb-2">Additional Driver #2</p>
+              <p className="font-bold text-forest-green mb-2">Additional Driver #2</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <InputLine label="Name" value={data.additionalDrivers.d2Name} onChange={v => update('additionalDrivers', 'd2Name', v)} />
                 <InputLine label="DOB" value={data.additionalDrivers.d2Dob} onChange={v => update('additionalDrivers', 'd2Dob', v)} />
@@ -581,8 +581,8 @@ const App: React.FC = () => {
 
         {/* FEE SCHEDULE */}
         <div className="mt-8 mb-12 avoid-break">
-          <div className="bg-lightGray border-2 border-forestGreen p-4 md:p-6 rounded shadow-sm">
-             <h3 className="text-lg md:text-xl font-bold font-sans text-forestGreen uppercase text-center mb-4 tracking-wider">Fee Schedule Summary</h3>
+          <div className="bg-light-gray border-2 border-forest-green p-4 md:p-6 rounded shadow-sm">
+             <h3 className="text-lg md:text-xl font-bold font-sans text-forest-green uppercase text-center mb-4 tracking-wider">Fee Schedule Summary</h3>
              <table className="w-full text-xs md:text-sm font-serif">
                <tbody>
                   {[
@@ -600,7 +600,7 @@ const App: React.FC = () => {
                   ].map(([label, cost], i) => (
                     <tr key={i} className="border-b border-gray-300 last:border-0">
                       <td className="py-2 font-bold text-charcoal pr-2">{label}</td>
-                      <td className="py-2 text-right font-mono text-alertRed font-bold whitespace-nowrap">{cost}</td>
+                      <td className="py-2 text-right font-mono text-alert-red font-bold whitespace-nowrap">{cost}</td>
                     </tr>
                   ))}
                </tbody>
@@ -609,7 +609,7 @@ const App: React.FC = () => {
         </div>
 
         <div className="text-center mt-12 pt-8 border-t border-gray-300">
-           <p className="font-bold text-forestGreen italic text-base md:text-lg mb-2">"We look forward to providing you with excellent service"</p>
+           <p className="font-bold text-forest-green italic text-base md:text-lg mb-2">"We look forward to providing you with excellent service"</p>
            <p className="text-xs md:text-sm text-gray-500">Triple J Auto Investment LLC | 8774 Almeda Genoa Road, Houston, TX 77075</p>
         </div>
 

@@ -129,11 +129,11 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({ value, onChange, lab
     return (
       <div className="flex flex-col w-full mb-6" ref={containerRef}>
         <div className="flex justify-between items-end mb-2">
-           {label && <label className="text-xs font-sans font-bold text-forestGreen uppercase tracking-wider">{label}</label>}
+           {label && <label className="text-xs font-sans font-bold text-forest-green uppercase tracking-wider">{label}</label>}
            <span className="text-xs text-gray-400 italic">Sign inside the box below</span>
         </div>
         
-        <div className="border-2 border-forestGreen rounded bg-white shadow-lg relative overflow-hidden">
+        <div className="border-2 border-forest-green rounded bg-white shadow-lg relative overflow-hidden">
           <canvas
             ref={canvasRef}
             className="block w-full bg-white cursor-crosshair touch-none"
@@ -146,7 +146,7 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({ value, onChange, lab
           <button 
               type="button"
               onClick={clearCanvas} 
-              className="absolute top-2 right-2 p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-alertRed hover:text-white transition-colors shadow-sm z-10 active:bg-gray-300"
+              className="absolute top-2 right-2 p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-alert-red hover:text-white transition-colors shadow-sm z-10 active:bg-gray-300"
               title="Clear Signature"
             >
               <Eraser size={20} />
@@ -165,7 +165,7 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({ value, onChange, lab
             <button 
                 type="button"
                 onClick={saveSignature}
-                className="py-3 bg-forestGreen text-white rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-green-900 shadow-md active:bg-green-950"
+                className="py-3 bg-forest-green text-white rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-green-900 shadow-md active:bg-green-950"
             >
                 <Check size={18} />
                 Save Signature
@@ -177,7 +177,7 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({ value, onChange, lab
 
   return (
     <div className="flex flex-col w-full mb-4 break-inside-avoid">
-      {label && <label className="text-xs font-sans font-bold text-forestGreen uppercase tracking-wider mb-1">{label}</label>}
+      {label && <label className="text-xs font-sans font-bold text-forest-green uppercase tracking-wider mb-1">{label}</label>}
       {value ? (
         <div className="relative group border-b-2 border-charcoal pb-2">
             <img src={value} alt="Signature" className="h-20 md:h-24 object-contain mr-auto" />
@@ -197,10 +197,10 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({ value, onChange, lab
             <button 
                 type="button"
                 onClick={() => setIsEditing(true)}
-                className="signature-pad-placeholder w-full h-24 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 flex flex-col items-center justify-center text-gray-500 hover:bg-gray-100 hover:border-forestGreen transition-all group active:scale-95 active:bg-gray-200 no-print"
+                className="signature-pad-placeholder w-full h-24 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 flex flex-col items-center justify-center text-gray-500 hover:bg-gray-100 hover:border-forest-green transition-all group active:scale-95 active:bg-gray-200 no-print"
             >
-                <PenTool className="mb-2 group-hover:text-forestGreen" size={24} />
-                <span className="font-bold text-sm group-hover:text-forestGreen">Tap to Sign</span>
+                <PenTool className="mb-2 group-hover:text-forest-green" size={24} />
+                <span className="font-bold text-sm group-hover:text-forest-green">Tap to Sign</span>
             </button>
             {/* Element specifically for PDF/Print when no signature is present */}
             <div className="signature-pad-empty-line hidden print:block border-b-2 border-charcoal h-16 w-full"></div>

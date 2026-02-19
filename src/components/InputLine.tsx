@@ -23,7 +23,7 @@ export const InputLine: React.FC<InputLineProps> = ({
 }) => {
   return (
     <div className={`flex flex-col ${width} ${className} print:block`}>
-      {label && <label className="text-xs font-sans font-bold text-forestGreen uppercase tracking-wider mb-1">{label}</label>}
+      {label && <label className="text-xs font-sans font-bold text-forest-green uppercase tracking-wider mb-1">{label}</label>}
       <input
         type={type}
         value={value}
