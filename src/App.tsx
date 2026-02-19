@@ -462,7 +462,7 @@ const App: React.FC = () => {
             <strong>10.5 Pet Policy:</strong> No pets without auth. $150.00 cleaning fee.
           </p>
           <p className="text-justify mb-2">
-             <strong>10.6 Dispute Resolution:</strong> Negotiation -> Mediation -> Litigation in Harris County, TX.
+             <strong>10.6 Dispute Resolution:</strong> Negotiation &rarr; Mediation &rarr; Litigation in Harris County, TX.
           </p>
         </Section>
 
