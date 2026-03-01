@@ -20,10 +20,10 @@ Transform the existing client-side React agreement form into a full e-signing pl
 **Plans:** 4 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Project restructure + Tailwind v4 migration
-- [ ] 01-02-PLAN.md -- Supabase database schema + client setup
-- [ ] 01-03-PLAN.md -- Auth provider + React Router + protected routes
-- [ ] 01-04-PLAN.md -- Agreement CRUD + Zustand store + admin form
+- [x] 01-01-PLAN.md -- Project restructure + Tailwind v4 migration
+- [x] 01-02-PLAN.md -- Supabase database schema + client setup
+- [x] 01-03-PLAN.md -- Auth provider + React Router + protected routes
+- [x] 01-04-PLAN.md -- Agreement CRUD + Zustand store + admin form
 
 **Requirements:**
 - INFRA-01: Backend with API endpoints for agreement CRUD
@@ -49,6 +49,14 @@ Plans:
 **Goal:** Admin can send a link to a client who fills their portion on their phone, signs the agreement, and all actions are audit-logged.
 
 **Dependencies:** Phase 1 (needs persistent agreements, auth, routing, audit infrastructure)
+
+**Plans:** 4 plans
+
+Plans:
+- [ ] 02-01-PLAN.md -- Dependencies, RLS migration, link generation lib, client store, routes
+- [ ] 02-02-PLAN.md -- Admin link share modal with QR code + expired page
+- [ ] 02-03-PLAN.md -- Client wizard container + form steps 1-4
+- [ ] 02-04-PLAN.md -- Signature/initials capture, review/submit, confirmation, admin read-only
 
 **Requirements:**
 - CORE-03: Admin generates unique shareable link for client
@@ -124,8 +132,8 @@ Plans:
 
 | Phase | Name | Requirements | Status |
 |-------|------|:------------:|--------|
-| 1 | Backend Foundation | 8 | Planned (4 plans) |
-| 2 | Shareable Links + Client Signing | 14 | Pending |
+| 1 | Backend Foundation | 8 | Complete (4 plans) |
+| 2 | Shareable Links + Client Signing | 14 | Planned (4 plans) |
 | 3 | PDF Generation + Delivery | 8 | Pending |
 | 4 | Admin Dashboard | 6 | Pending |
 | **Total** | | **36** | |
@@ -133,3 +141,4 @@ Plans:
 ---
 *Roadmap created: 2026-02-18*
 *Phase 1 planned: 2026-02-18*
+*Phase 2 planned: 2026-03-01*
