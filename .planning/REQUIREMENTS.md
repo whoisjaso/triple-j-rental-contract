@@ -18,7 +18,7 @@
 - [ ] **CORE-02**: Agreement numbers are auto-generated sequentially (e.g., TJ-2026-0001)
 - [x] **CORE-03**: Admin can generate a unique shareable link for a client to fill their portion
 - [x] **CORE-04**: Admin fields are locked and read-only when client views the agreement via link
-- [ ] **CORE-05**: Client fields are locked and read-only when admin views a completed agreement
+- [x] **CORE-05**: Client fields are locked and read-only when admin views a completed agreement
 - [x] **CORE-06**: Shareable links expire after a configurable number of days
 - [x] **CORE-07**: Expired links show a clear "expired" message page
 - [x] **CORE-08**: QR code is generated for each agreement link (for in-person handoffs)
@@ -26,11 +26,11 @@
 ### Signing Experience
 
 - [x] **SIGN-01**: Client can fill personal info, emergency contact, and employment fields via the link
-- [ ] **SIGN-02**: Client can draw their signature on a canvas pad (finger/mouse/stylus)
-- [ ] **SIGN-03**: Client can type their name and have it rendered in a signature font as alternative
-- [ ] **SIGN-04**: Client can initial each acknowledgment section
+- [x] **SIGN-02**: Client can draw their signature on a canvas pad (finger/mouse/stylus)
+- [x] **SIGN-03**: Client can type their name and have it rendered in a signature font as alternative
+- [x] **SIGN-04**: Client can initial each acknowledgment section
 - [x] **SIGN-05**: Signing form works flawlessly on mobile phones (mobile-first design)
-- [ ] **SIGN-06**: Signature data is stored server-side with timestamp, IP address, and user agent for audit
+- [x] **SIGN-06**: Signature data is stored server-side with timestamp, IP address, and user agent for audit
 
 ### PDF & Branding
 
@@ -59,7 +59,7 @@
 
 - [ ] **AUDIT-01**: System records when an agreement is created, with admin IP and timestamp
 - [x] **AUDIT-02**: System records when a client opens the agreement link (IP, timestamp, user agent)
-- [ ] **AUDIT-03**: System records when each signature and initial is captured
+- [x] **AUDIT-03**: System records when each signature and initial is captured
 - [ ] **AUDIT-04**: Audit log is append-only and cannot be modified after creation
 
 ## v2 Requirements
@@ -106,16 +106,16 @@
 | CORE-02 | Phase 1 | Pending |
 | CORE-03 | Phase 2 | Complete |
 | CORE-04 | Phase 2 | Complete |
-| CORE-05 | Phase 2 | Pending |
+| CORE-05 | Phase 2 | Complete |
 | CORE-06 | Phase 2 | Complete |
 | CORE-07 | Phase 2 | Complete |
 | CORE-08 | Phase 2 | Complete |
 | SIGN-01 | Phase 2 | Complete |
-| SIGN-02 | Phase 2 | Pending |
-| SIGN-03 | Phase 2 | Pending |
-| SIGN-04 | Phase 2 | Pending |
+| SIGN-02 | Phase 2 | Complete |
+| SIGN-03 | Phase 2 | Complete |
+| SIGN-04 | Phase 2 | Complete |
 | SIGN-05 | Phase 2 | Complete |
-| SIGN-06 | Phase 2 | Pending |
+| SIGN-06 | Phase 2 | Complete |
 | PDF-01 | Phase 3 | Pending |
 | PDF-02 | Phase 3 | Pending |
 | PDF-03 | Phase 3 | Pending |
@@ -132,7 +132,7 @@
 | DASH-06 | Phase 4 | Pending |
 | AUDIT-01 | Phase 1 | Pending |
 | AUDIT-02 | Phase 2 | Complete |
-| AUDIT-03 | Phase 2 | Pending |
+| AUDIT-03 | Phase 2 | Complete |
 | AUDIT-04 | Phase 1 | Pending |
 
 **Coverage:**
