@@ -50,7 +50,7 @@ Plans:
 
 **Dependencies:** Phase 1 (needs persistent agreements, auth, routing, audit infrastructure)
 
-**Plans:** 4 plans
+**Plans:** 2/4 plans executed
 
 Plans:
 - [x] 02-01-PLAN.md -- Dependencies, RLS migration, link generation lib, client store, routes
@@ -133,7 +133,7 @@ Plans:
 | Phase | Name | Requirements | Status |
 |-------|------|:------------:|--------|
 | 1 | Backend Foundation | 8 | Complete (4 plans) |
-| 2 | Shareable Links + Client Signing | 14 | In Progress (1/4 plans done) |
+| 2 | 2/4 | In Progress|  |
 | 3 | PDF Generation + Delivery | 8 | Pending |
 | 4 | Admin Dashboard | 6 | Pending |
 | **Total** | | **36** | |

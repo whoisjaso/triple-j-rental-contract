@@ -20,8 +20,8 @@
 - [ ] **CORE-04**: Admin fields are locked and read-only when client views the agreement via link
 - [ ] **CORE-05**: Client fields are locked and read-only when admin views a completed agreement
 - [x] **CORE-06**: Shareable links expire after a configurable number of days
-- [ ] **CORE-07**: Expired links show a clear "expired" message page
-- [ ] **CORE-08**: QR code is generated for each agreement link (for in-person handoffs)
+- [x] **CORE-07**: Expired links show a clear "expired" message page
+- [x] **CORE-08**: QR code is generated for each agreement link (for in-person handoffs)
 
 ### Signing Experience
 
@@ -108,8 +108,8 @@
 | CORE-04 | Phase 2 | Pending |
 | CORE-05 | Phase 2 | Pending |
 | CORE-06 | Phase 2 | Complete |
-| CORE-07 | Phase 2 | Pending |
-| CORE-08 | Phase 2 | Pending |
+| CORE-07 | Phase 2 | Complete |
+| CORE-08 | Phase 2 | Complete |
 | SIGN-01 | Phase 2 | Pending |
 | SIGN-02 | Phase 2 | Pending |
 | SIGN-03 | Phase 2 | Pending |

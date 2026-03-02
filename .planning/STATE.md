@@ -4,19 +4,20 @@
 
 **Core Value:** Client receives a link, fills their portion on their phone, signs the agreement, and both parties automatically get a professional PDF -- seamlessly, with zero friction.
 
-**Current Focus:** Phase 2 in progress. Backend infrastructure (RLS, lib functions, store, routes) complete with Plan 01.
+**Current Focus:** Phase 2 in progress. Admin link-share UI complete with Plan 02. Plans 03 and 04 remain.
 
 ## Current Position
 
 **Milestone:** v1
 **Phase:** 2 of 4 (Shareable Links + Client Signing) -- IN PROGRESS
-**Plan:** 1 of 4 in phase (Plan 01 done)
+**Plan:** 2 of 4 in phase (Plans 01-02 done)
 **Status:** EXECUTING PHASE 2
 
 **Progress:**
-```
+[█████░░░░░] 50%
+[████░░░░░░] 38% (6/16 tasks)
 Phase 1: Backend Foundation        [✓] ██████████ 100% (4/4 plans)
-Phase 2: Shareable Links + Signing [~] ██░░░░░░░░  25% (1/4 plans)
+Phase 2: Shareable Links + Signing [~] ████░░░░░░  50% (2/4 plans)
 Phase 3: PDF Generation + Delivery [ ] ░░░░░░░░░░   0%
 Phase 4: Admin Dashboard           [ ] ░░░░░░░░░░   0%
 ```
@@ -25,10 +26,11 @@ Phase 4: Admin Dashboard           [ ] ░░░░░░░░░░   0%
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 5 |
+| Plans completed | 6 |
 | Plans failed | 0 |
-| Total tokens (est.) | ~190k |
-| Session count | 4 |
+| Total tokens (est.) | ~230k |
+| Session count | 5 |
+| Phase 02-shareable-links-client-signing P02 | 3m | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -41,6 +43,8 @@ Phase 4: Admin Dashboard           [ ] ░░░░░░░░░░   0%
 | D-0201-1 | deepMerge written inline (not lodash/merge) | Only top-level JSONB section merging needed; avoid bundle weight | 02-01 |
 | D-0201-2 | ip_address populated by DB trigger not client JS | PostgREST x-forwarded-for readable at DB layer; browsers cannot self-report real IP | 02-01 |
 | D-0201-3 | /sign/expired route registered before /sign/:token | React Router matches in order; prevents 'expired' being captured as a token | 02-01 |
+| D-0202-1 | Revoke & Regenerate is a single atomic handler (revoke then generate) | Admin always wants a fresh link; separate steps would leave no active link momentarily | 02-02 |
+| D-0202-2 | Read-only mode uses disabled on checkbox/radio/select, readOnly on InputLine text inputs | HTML readOnly attribute only applies to text inputs; InputLine already had readOnly prop | 02-02 |
 | -- | Supabase as all-in-one backend | Eliminates server management, fits free tier | Roadmap |
 | -- | @react-pdf/renderer for PDF generation | Fallback: pdf-lib if Deno incompatible | Roadmap |
 | -- | Resend for email, Twilio for SMS | 3,000 free/month; ~$1.35/month | Roadmap |
@@ -59,10 +63,10 @@ Phase 4: Admin Dashboard           [ ] ░░░░░░░░░░   0%
 
 ## Session Continuity
 
-**Last session:** 2026-03-01T20:00:00Z
-**Stopped at:** Completed 02-01-PLAN.md
-**What happened:** Executed Phase 2 Plan 01. Installed qrcode.react, react-hook-form, zod, @hookform/resolvers. Created 002_client_sign_rls.sql (anon UPDATE RLS + audit_log IP auto-capture trigger). Added generateShareLink + revokeLink to agreements.ts. Created clientSigning.ts (fetchAgreementByToken, recordClientView, submitClientSigning). Created clientSignStore.ts (Zustand persist store per-token + context + hook). Added 3 public /sign/ routes to router.tsx. Added Dancing Script font to main.css. Build passes, TS zero errors.
-**Next steps:** Execute Phase 2 Plan 02 (admin link-share UI: LinkShareModal with copy URL, QR code, and SMS send).
+**Last session:** 2026-03-02T01:36:56Z
+**Stopped at:** Completed 02-02-PLAN.md
+**What happened:** Executed Phase 2 Plan 02. Created LinkShareModal (QRCodeSVG, copy URL with Copied! feedback, revoke/regenerate with confirmation). Updated AgreementEdit with Send to Client (gold, Share2 icon) / View Share Link / Client has signed badge. Added read-only mode for all inputs when signed/completed. Created branded ExpiredPage with JJAI logo, phone, address. router.tsx /sign/expired was already wired to ExpiredPage. Build passes, TS zero errors.
+**Next steps:** Execute Phase 2 Plan 03 (client signing wizard: multi-step form, drawn/typed signature, initials).
 
 ---
-*Last updated: 2026-03-01 (02-01 complete)*
+*Last updated: 2026-03-02 (02-02 complete)*
