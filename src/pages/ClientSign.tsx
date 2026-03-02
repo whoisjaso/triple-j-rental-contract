@@ -8,11 +8,13 @@ import ClientReviewStep from '../components/ClientReviewStep'
 import ClientPersonalStep from '../components/ClientPersonalStep'
 import ClientEmploymentStep from '../components/ClientEmploymentStep'
 import ClientEmergencyStep from '../components/ClientEmergencyStep'
+import ClientSignStep from '../components/ClientSignStep'
+import ClientReviewSubmit from '../components/ClientReviewSubmit'
 
 const STEP_LABELS = ['Review', 'Personal Info', 'Employment', 'Emergency', 'Sign', 'Confirm']
 
 // Inner component that consumes the store (must be inside the Provider)
-function WizardInner({ agreementData }: { agreementData: AgreementData }) {
+function WizardInner({ agreementData, token }: { agreementData: AgreementData; token: string }) {
   const step = useClientSignStore((s) => s.step)
   const setStep = useClientSignStore((s) => s.setStep)
 
@@ -47,14 +49,10 @@ function WizardInner({ agreementData }: { agreementData: AgreementData }) {
           <ClientEmergencyStep onNext={onNext} onBack={onBack} />
         )}
         {step === 4 && (
-          <div className="text-center py-12 text-gray-500">
-            <p className="text-base font-medium">Signature step coming soon.</p>
-          </div>
+          <ClientSignStep onNext={onNext} onBack={onBack} agreementData={agreementData} />
         )}
         {step === 5 && (
-          <div className="text-center py-12 text-gray-500">
-            <p className="text-base font-medium">Review &amp; confirm step coming soon.</p>
-          </div>
+          <ClientReviewSubmit onBack={onBack} agreementData={agreementData} token={token} />
         )}
       </div>
     </div>
@@ -176,7 +174,7 @@ export default function ClientSign() {
 
       {/* Wizard */}
       <ClientSignStoreContext.Provider value={store}>
-        <WizardInner agreementData={agreementData} />
+        <WizardInner agreementData={agreementData} token={token!} />
       </ClientSignStoreContext.Provider>
 
       {/* Footer */}

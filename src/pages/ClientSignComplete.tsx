@@ -1,0 +1,69 @@
+import { CircleCheck } from 'lucide-react'
+import { useParams } from 'react-router'
+
+export default function ClientSignComplete() {
+  const { token } = useParams<{ token: string }>()
+  // token available for future reference (e.g., fetching agreement number)
+  void token
+
+  return (
+    <div className="min-h-screen bg-light-gray flex flex-col">
+      {/* Branded header */}
+      <header className="bg-white border-b border-gray-200 px-6 py-4 text-center shadow-sm">
+        <div className="text-2xl font-bold text-gold tracking-widest leading-none">JJAI</div>
+        <div className="text-sm font-semibold text-forest-green mt-0.5">Triple J Auto Investment LLC</div>
+      </header>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 max-w-sm w-full px-8 py-10 flex flex-col items-center text-center">
+
+          {/* Brand mark */}
+          <div className="mb-6">
+            <div className="text-3xl font-bold text-gold tracking-widest leading-none">JJAI</div>
+            <div className="text-xs font-semibold text-forest-green mt-0.5 tracking-wide">
+              Triple J Auto Investment LLC
+            </div>
+          </div>
+
+          {/* Success icon */}
+          <CircleCheck
+            className="mb-5 text-forest-green"
+            size={64}
+            strokeWidth={1.5}
+          />
+
+          {/* Heading */}
+          <h1 className="text-2xl font-bold text-forest-green mb-3">
+            Agreement Signed Successfully
+          </h1>
+
+          {/* Subtext */}
+          <p className="text-gray-600 text-sm leading-relaxed mb-6">
+            Thank you! A copy of your signed agreement will be emailed to you shortly.
+          </p>
+
+          {/* Divider */}
+          <div className="w-full border-t border-gray-100 my-2" />
+
+          {/* Contact section */}
+          <div className="mt-4 text-center">
+            <p className="text-xs text-gray-400 mb-1">Questions? Contact us at</p>
+            <a
+              href="tel:+18324005294"
+              className="text-forest-green font-semibold text-sm hover:underline"
+            >
+              (832) 400-5294
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="pb-8 text-center text-xs text-gray-400">
+        &copy; {new Date().getFullYear()} Triple J Auto Investment LLC &bull; 8774 Almeda Genoa Road, Houston, TX 77075
+      </footer>
+    </div>
+  )
+}

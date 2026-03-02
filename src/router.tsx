@@ -6,6 +6,7 @@ import AgreementCreate from './pages/AgreementCreate'
 import AgreementEdit from './pages/AgreementEdit'
 import ExpiredPage from './pages/ExpiredPage'
 import ClientSign from './pages/ClientSign'
+import ClientSignComplete from './pages/ClientSignComplete'
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/sign/:token/complete',
-    element: <div>Sign page complete placeholder</div>,
+    element: <ClientSignComplete />,
   },
   {
     path: '/',

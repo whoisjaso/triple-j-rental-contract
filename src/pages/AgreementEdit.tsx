@@ -9,6 +9,29 @@ import { InputLine } from '../components/InputLine'
 import LinkShareModal from '../components/LinkShareModal'
 import type { AgreementData } from '../types'
 
+const ACKNOWLEDGMENT_SECTION_LABELS: Record<string, string> = {
+  payment: 'Payment Terms',
+  insurance: 'Insurance Disclosure',
+  gps: 'GPS Tracking',
+  geo: 'Geographic Restrictions',
+  recovery: 'Unauthorized Recovery',
+}
+
+interface ReadOnlyFieldProps {
+  label: string
+  value?: string | null
+}
+
+function ReadOnlyField({ label, value }: ReadOnlyFieldProps) {
+  if (!value) return null
+  return (
+    <div className="flex flex-col gap-0.5">
+      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{label}</span>
+      <span className="text-sm text-charcoal">{value || <span className="text-gray-400 italic">—</span>}</span>
+    </div>
+  )
+}
+
 const statusColors: Record<string, string> = {
   draft: 'bg-gray-200 text-gray-700',
   sent: 'bg-blue-100 text-blue-700',
@@ -325,6 +348,106 @@ export default function AgreementEdit() {
             setStatus('draft')
           }}
         />
+      )}
+
+      {/* Client Submitted Information — read-only, only visible when signed/completed */}
+      {isSigned && (
+        <div className="bg-green-50 border border-green-200 rounded shadow p-6 mb-6">
+          <div className="flex items-center gap-3 mb-5">
+            <h2 className="text-lg font-bold text-forest-green">Client Submitted Information</h2>
+            <span className="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Signed
+            </span>
+          </div>
+
+          {/* Personal Information — read-only */}
+          <div className="mb-5">
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Personal Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 bg-white rounded-lg border border-green-100 p-4">
+              <ReadOnlyField label="Full Name" value={data.renter?.fullName} />
+              <ReadOnlyField label="Date of Birth" value={data.renter?.dob} />
+              <ReadOnlyField label="Driver's License" value={data.renter?.dlNumber} />
+              <ReadOnlyField label="License Expiration" value={data.renter?.dlExp} />
+              <ReadOnlyField label="Address" value={data.renter?.address} />
+              <ReadOnlyField label="City, State, ZIP" value={data.renter?.cityStateZip} />
+              <ReadOnlyField label="Primary Phone" value={data.renter?.phonePrimary} />
+              <ReadOnlyField label="Secondary Phone" value={data.renter?.phoneSecondary} />
+              <ReadOnlyField label="Email" value={data.renter?.email} />
+            </div>
+          </div>
+
+          {/* Employment — read-only */}
+          <div className="mb-5">
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Employment</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 bg-white rounded-lg border border-green-100 p-4">
+              <ReadOnlyField label="Employer Name" value={data.renter?.employerName} />
+              <ReadOnlyField label="Employer Phone" value={data.renter?.employerPhone} />
+              <ReadOnlyField label="Monthly Income" value={data.renter?.monthlyIncome} />
+            </div>
+          </div>
+
+          {/* Emergency Contact — read-only */}
+          <div className="mb-5">
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Emergency Contact</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 bg-white rounded-lg border border-green-100 p-4">
+              <ReadOnlyField label="Name" value={data.renter?.emergencyName} />
+              <ReadOnlyField label="Phone" value={data.renter?.emergencyPhone} />
+              <ReadOnlyField label="Relationship" value={data.renter?.emergencyRelation} />
+            </div>
+          </div>
+
+          {/* Signature — read-only */}
+          {data.signatures?.renterSig && (
+            <div className="mb-5">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Client Signature</h3>
+              <div className="bg-white rounded-lg border border-green-100 p-4">
+                <div className="border-b-2 border-charcoal pb-2 inline-block">
+                  <img
+                    src={data.signatures.renterSig}
+                    alt="Client signature"
+                    className="h-16 object-contain"
+                  />
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  Signed electronically
+                  {data.signatures.renterDate ? ` on ${data.signatures.renterDate}` : ''}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Acknowledged Sections — read-only */}
+          <div>
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Acknowledged Sections</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {(['payment', 'insurance', 'gps', 'geo', 'recovery'] as const).map((key) => {
+                const sectionData = data[key] as { acknowledgmentInitials?: string } | undefined
+                const hasInitials = !!sectionData?.acknowledgmentInitials
+                return (
+                  <div
+                    key={key}
+                    className={`flex items-center gap-2 p-3 rounded-lg border text-sm ${
+                      hasInitials
+                        ? 'bg-green-50 border-green-200 text-green-700'
+                        : 'bg-gray-50 border-gray-200 text-gray-400'
+                    }`}
+                  >
+                    <CheckCircle2 className={`w-4 h-4 shrink-0 ${hasInitials ? 'text-forest-green' : 'text-gray-300'}`} />
+                    <span className="font-medium">{ACKNOWLEDGMENT_SECTION_LABELS[key]}</span>
+                    {hasInitials && sectionData?.acknowledgmentInitials && (
+                      <img
+                        src={sectionData.acknowledgmentInitials}
+                        alt="Client initials"
+                        className="h-6 ml-auto object-contain border border-gray-200 rounded bg-white px-0.5"
+                      />
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Audit Log */}
