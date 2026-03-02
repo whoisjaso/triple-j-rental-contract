@@ -19,6 +19,20 @@ export const router = createBrowserRouter([
       { path: 'agreements/:id', element: <AgreementEdit /> },
     ],
   },
+  // Public client signing routes — NOT nested under /admin layout
+  // Real components are created in Plans 03 and 04; placeholders register the routes now.
+  {
+    path: '/sign/expired',
+    element: <div>Sign page expired placeholder</div>,
+  },
+  {
+    path: '/sign/:token',
+    element: <div>Sign page placeholder</div>,
+  },
+  {
+    path: '/sign/:token/complete',
+    element: <div>Sign page complete placeholder</div>,
+  },
   {
     path: '/',
     element: <Navigate to="/admin" replace />,
