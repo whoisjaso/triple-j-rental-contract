@@ -4,14 +4,14 @@
 
 **Core Value:** Client receives a link, fills their portion on their phone, signs the agreement, and both parties automatically get a professional PDF -- seamlessly, with zero friction.
 
-**Current Focus:** Phase 2 in progress. Client signing wizard steps 1-4 complete with Plan 03. Plan 04 (signature canvas + submit) remains.
+**Current Focus:** Phase 2 Plan 04 tasks 1-2 complete. Awaiting human verification (Task 3 checkpoint) before finalizing summary.
 
 ## Current Position
 
 **Milestone:** v1
 **Phase:** 2 of 4 (Shareable Links + Client Signing) -- IN PROGRESS
-**Plan:** 3 of 4 in phase (Plans 01-03 done)
-**Status:** EXECUTING PHASE 2
+**Plan:** 4 of 4 in phase (Tasks 1-2 done, at checkpoint Task 3)
+**Status:** CHECKPOINT: AWAITING HUMAN VERIFY (02-04)
 
 **Progress:**
 ```
@@ -66,10 +66,10 @@ Phase 4: Admin Dashboard           [ ] ░░░░░░░░░░   0%
 
 ## Session Continuity
 
-**Last session:** 2026-03-02T01:47:00Z
-**Stopped at:** Completed 02-03-PLAN.md
-**What happened:** Executed Phase 2 Plan 03. Created ClientSign wizard container (token fetch, recordClientView with useRef guard, per-token Zustand store context, 6-step orchestration). Created WizardProgress (mobile text fallback, desktop circles). Created ClientReviewStep (agreement terms as Lora serif dl/dt/dd document), ClientPersonalStep (9-field RHF+zod, 2-col grid), ClientEmploymentStep (3-field RHF+zod), ClientEmergencyStep (3-field RHF+zod). Steps 4-5 are placeholders for Plan 04. Auto-fixed React namespace type error in ClientReviewStep. Build passes, TS zero errors.
-**Next steps:** Execute Phase 2 Plan 04 (signature canvas, acknowledgment initials, final submit via submitClientSigning).
+**Last session:** 2026-03-02T01:49:00Z
+**Stopped at:** 02-04 Task 3 checkpoint (human-verify)
+**What happened:** Executed Phase 2 Plan 04 Tasks 1-2. Created ClientSignStep (Draw|Type tabs, initials canvas, 5 acknowledgment checkboxes, JPEG export, iOS touch-action:none). Created ClientReviewSubmit (6-section review, pre-submission audit logs for initials+signature capture, calls submitClientSigning). Created ClientSignComplete (branded confirmation, CircleCheck, tel: link). Updated AgreementEdit to show client data as read-only when signed (personal, employment, emergency, signature img, acknowledgment initials thumbnails). Wired ClientSignStep/ClientReviewSubmit into ClientSign wizard. Updated router with real ClientSignComplete. Fixed React.ReactNode namespace error (used ReactNode import). Build passes, TS zero errors.
+**Next steps:** Resume 02-04 after human verification of full signing flow (Task 3 approved).
 
 ---
-*Last updated: 2026-03-02 (02-03 complete)*
+*Last updated: 2026-03-02 (02-04 at checkpoint)*
