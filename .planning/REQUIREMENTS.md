@@ -17,7 +17,7 @@
 - [ ] **CORE-01**: Admin can create a new agreement and fill vehicle info, rates, terms, and fees
 - [ ] **CORE-02**: Agreement numbers are auto-generated sequentially (e.g., TJ-2026-0001)
 - [x] **CORE-03**: Admin can generate a unique shareable link for a client to fill their portion
-- [ ] **CORE-04**: Admin fields are locked and read-only when client views the agreement via link
+- [x] **CORE-04**: Admin fields are locked and read-only when client views the agreement via link
 - [ ] **CORE-05**: Client fields are locked and read-only when admin views a completed agreement
 - [x] **CORE-06**: Shareable links expire after a configurable number of days
 - [x] **CORE-07**: Expired links show a clear "expired" message page
@@ -25,11 +25,11 @@
 
 ### Signing Experience
 
-- [ ] **SIGN-01**: Client can fill personal info, emergency contact, and employment fields via the link
+- [x] **SIGN-01**: Client can fill personal info, emergency contact, and employment fields via the link
 - [ ] **SIGN-02**: Client can draw their signature on a canvas pad (finger/mouse/stylus)
 - [ ] **SIGN-03**: Client can type their name and have it rendered in a signature font as alternative
 - [ ] **SIGN-04**: Client can initial each acknowledgment section
-- [ ] **SIGN-05**: Signing form works flawlessly on mobile phones (mobile-first design)
+- [x] **SIGN-05**: Signing form works flawlessly on mobile phones (mobile-first design)
 - [ ] **SIGN-06**: Signature data is stored server-side with timestamp, IP address, and user agent for audit
 
 ### PDF & Branding
@@ -58,7 +58,7 @@
 ### Audit Trail
 
 - [ ] **AUDIT-01**: System records when an agreement is created, with admin IP and timestamp
-- [ ] **AUDIT-02**: System records when a client opens the agreement link (IP, timestamp, user agent)
+- [x] **AUDIT-02**: System records when a client opens the agreement link (IP, timestamp, user agent)
 - [ ] **AUDIT-03**: System records when each signature and initial is captured
 - [ ] **AUDIT-04**: Audit log is append-only and cannot be modified after creation
 
@@ -105,16 +105,16 @@
 | CORE-01 | Phase 1 | Pending |
 | CORE-02 | Phase 1 | Pending |
 | CORE-03 | Phase 2 | Complete |
-| CORE-04 | Phase 2 | Pending |
+| CORE-04 | Phase 2 | Complete |
 | CORE-05 | Phase 2 | Pending |
 | CORE-06 | Phase 2 | Complete |
 | CORE-07 | Phase 2 | Complete |
 | CORE-08 | Phase 2 | Complete |
-| SIGN-01 | Phase 2 | Pending |
+| SIGN-01 | Phase 2 | Complete |
 | SIGN-02 | Phase 2 | Pending |
 | SIGN-03 | Phase 2 | Pending |
 | SIGN-04 | Phase 2 | Pending |
-| SIGN-05 | Phase 2 | Pending |
+| SIGN-05 | Phase 2 | Complete |
 | SIGN-06 | Phase 2 | Pending |
 | PDF-01 | Phase 3 | Pending |
 | PDF-02 | Phase 3 | Pending |
@@ -131,7 +131,7 @@
 | DASH-05 | Phase 4 | Pending |
 | DASH-06 | Phase 4 | Pending |
 | AUDIT-01 | Phase 1 | Pending |
-| AUDIT-02 | Phase 2 | Pending |
+| AUDIT-02 | Phase 2 | Complete |
 | AUDIT-03 | Phase 2 | Pending |
 | AUDIT-04 | Phase 1 | Pending |
 
