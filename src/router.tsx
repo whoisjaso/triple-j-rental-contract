@@ -4,6 +4,8 @@ import AdminLayout from './pages/AdminLayout'
 import AgreementList from './pages/AgreementList'
 import AgreementCreate from './pages/AgreementCreate'
 import AgreementEdit from './pages/AgreementEdit'
+import ExpiredPage from './pages/ExpiredPage'
+import ClientSign from './pages/ClientSign'
 
 export const router = createBrowserRouter([
   {
@@ -20,14 +22,14 @@ export const router = createBrowserRouter([
     ],
   },
   // Public client signing routes — NOT nested under /admin layout
-  // Real components are created in Plans 03 and 04; placeholders register the routes now.
+  // /sign/expired registered BEFORE /sign/:token to prevent 'expired' matching as a token (D-0201-3)
   {
     path: '/sign/expired',
-    element: <div>Sign page expired placeholder</div>,
+    element: <ExpiredPage />,
   },
   {
     path: '/sign/:token',
-    element: <div>Sign page placeholder</div>,
+    element: <ClientSign />,
   },
   {
     path: '/sign/:token/complete',
