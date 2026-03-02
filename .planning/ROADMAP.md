@@ -2,12 +2,12 @@
 
 **Created:** 2026-02-18
 **Depth:** Quick (3-5 phases)
-**Phases:** 4
-**Coverage:** 36/36 v1 requirements mapped
+**Phases:** 5
+**Coverage:** 36/36 v1 requirements mapped + 12 Phase 5 pipeline requirements
 
 ## Overview
 
-Transform the existing client-side React agreement form into a full e-signing platform where admin fills vehicle/payment details, generates a shareable link, client signs on their phone, and both parties receive a professional PDF automatically. Four phases follow the critical dependency chain: backend foundation, shareable signing flow, PDF generation with delivery, and admin dashboard.
+Transform the existing client-side React agreement form into a full e-signing platform where admin fills vehicle/payment details, generates a shareable link, client signs on their phone, and both parties receive a professional PDF automatically. Four phases follow the critical dependency chain: backend foundation, shareable signing flow, PDF generation with delivery, and admin dashboard. Phase 5 adds an autonomous Manheim-to-website inventory pipeline.
 
 ---
 
@@ -54,9 +54,9 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md -- Dependencies, RLS migration, link generation lib, client store, routes
-- [ ] 02-02-PLAN.md -- Admin link share modal with QR code + expired page
-- [ ] 02-03-PLAN.md -- Client wizard container + form steps 1-4
-- [ ] 02-04-PLAN.md -- Signature/initials capture, review/submit, confirmation, admin read-only
+- [x] 02-02-PLAN.md -- Admin link share modal with QR code + expired page
+- [x] 02-03-PLAN.md -- Client wizard container + form steps 1-4
+- [x] 02-04-PLAN.md -- Signature/initials capture, review/submit, confirmation, admin read-only
 
 **Requirements:**
 - CORE-03: Admin generates unique shareable link for client
@@ -128,18 +128,61 @@ Plans:
 
 ---
 
+## Phase 5: Manheim Autonomous Inventory Pipeline
+
+**Goal:** When a vehicle is purchased on Manheim, it autonomously flows through email parsing, NHTSA enrichment, and Google Sheet population with "Incoming" status, then becomes "Available" after guided photo upload -- with SMS notifications to admin.
+
+**Dependencies:** None (independent from Phases 3-4; uses shared Supabase project)
+
+**Plans:** 5 plans
+
+Plans:
+- [ ] 05-01-PLAN.md -- Edge Function foundation: DB migration, types, OAuth2, Gmail client
+- [ ] 05-02-PLAN.md -- OVE email parser + NHTSA decoder + Sheets writer + SMS notifications
+- [ ] 05-03-PLAN.md -- Central Dispatch parser + Manheim Sale Docs PDF parser
+- [ ] 05-04-PLAN.md -- Standalone guided photo upload page with auto-publish
+- [ ] 05-05-PLAN.md -- pg_cron scheduling + end-to-end verification
+
+**Requirements:**
+- PIPE-01: Pipeline monitors Gmail for OVE purchase confirmation emails and parses vehicle data
+- PIPE-02: Pipeline enriches vehicle data via NHTSA VIN decode (GVWR, drive type)
+- PIPE-03: Pipeline appends new vehicle row to Google Sheet (26 of 40 columns auto-filled)
+- PIPE-04: Pipeline monitors Central Dispatch emails and updates towing cost per VIN
+- PIPE-05: Pipeline monitors Manheim Sale Document emails and extracts condition/title from PDF
+- PIPE-06: Pipeline log table records all processing events for audit and debugging
+- PIPE-07: SMS notification sent to admin on new vehicle addition or pipeline error
+- PIPE-08: Pipeline sets Listing Status to "Incoming" (Coming Soon on website)
+- PIPE-09: Standalone photo upload page with guided 7-shot sequence
+- PIPE-10: Photo upload auto-publishes vehicle (flips "Incoming" to "Available")
+- PIPE-11: Pipeline scheduled every 5 minutes via pg_cron
+- PIPE-12: Pipeline deduplicates by VIN and Gmail message ID
+
+**Success Criteria:**
+1. Unread OVE purchase confirmation emails are detected, parsed, and a new row with 26 columns is appended to Google Sheet with "Incoming" status
+2. NHTSA VIN decode enriches each vehicle with GVWR and drive type
+3. Central Dispatch emails update the Towing Cost column for matching VINs
+4. Manheim Sale Document PDFs are downloaded, parsed, and Condition/Title Type columns updated
+5. Admin receives SMS on new vehicle addition and pipeline errors (not for CD/Sale Docs updates)
+6. Photo upload page at /photos shows "Incoming" vehicles, guides through 7 camera shots, uploads to Supabase Storage
+7. After photos are uploaded, vehicle auto-publishes (status flips to "Available")
+8. Pipeline runs every 5 minutes via pg_cron and rejects unauthorized invocations
+
+---
+
 ## Progress
 
 | Phase | Name | Requirements | Status |
 |-------|------|:------------:|--------|
 | 1 | Backend Foundation | 8 | Complete (4 plans) |
-| 2 | 4/4 | Complete   | 2026-03-02 |
+| 2 | Shareable Links + Client Signing | 14 | Complete (4 plans) |
 | 3 | PDF Generation + Delivery | 8 | Pending |
 | 4 | Admin Dashboard | 6 | Pending |
-| **Total** | | **36** | |
+| 5 | Manheim Autonomous Inventory Pipeline | 12 | Planned (5 plans) |
+| **Total** | | **48** | |
 
 ---
 *Roadmap created: 2026-02-18*
 *Phase 1 planned: 2026-02-18*
 *Phase 2 planned: 2026-03-01*
-*Phase 2 Plan 01 complete: 2026-03-01*
+*Phase 2 complete: 2026-03-02*
+*Phase 5 planned: 2026-03-02*
