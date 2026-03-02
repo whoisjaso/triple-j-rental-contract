@@ -53,7 +53,7 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Dependencies, RLS migration, link generation lib, client store, routes
+- [x] 02-01-PLAN.md -- Dependencies, RLS migration, link generation lib, client store, routes
 - [ ] 02-02-PLAN.md -- Admin link share modal with QR code + expired page
 - [ ] 02-03-PLAN.md -- Client wizard container + form steps 1-4
 - [ ] 02-04-PLAN.md -- Signature/initials capture, review/submit, confirmation, admin read-only
@@ -133,7 +133,7 @@ Plans:
 | Phase | Name | Requirements | Status |
 |-------|------|:------------:|--------|
 | 1 | Backend Foundation | 8 | Complete (4 plans) |
-| 2 | Shareable Links + Client Signing | 14 | Planned (4 plans) |
+| 2 | Shareable Links + Client Signing | 14 | In Progress (1/4 plans done) |
 | 3 | PDF Generation + Delivery | 8 | Pending |
 | 4 | Admin Dashboard | 6 | Pending |
 | **Total** | | **36** | |
@@ -142,3 +142,4 @@ Plans:
 *Roadmap created: 2026-02-18*
 *Phase 1 planned: 2026-02-18*
 *Phase 2 planned: 2026-03-01*
+*Phase 2 Plan 01 complete: 2026-03-01*
