@@ -9,13 +9,13 @@ interface AcknowledgmentBoxProps {
 
 export const AcknowledgmentBox: React.FC<AcknowledgmentBoxProps> = ({ text, initials, onInitialsChange }) => {
   return (
-    <div className="bg-light-gray p-4 my-4 rounded-sm border border-gray-200 avoid-break">
+    <div className="bg-luxury-bg/30 p-4 my-4 rounded-sm border border-luxury-ink/10 avoid-break">
       <div className="flex items-start gap-3">
         <div className="mt-1">
-          <input type="checkbox" className="h-5 w-5 rounded border-gray-400 text-forest-green focus:ring-forest-green" />
+          <input type="checkbox" className="h-5 w-5 rounded border-gray-400 text-luxury-gold focus:ring-luxury-gold" />
         </div>
         <div className="flex-1">
-          <p className="font-bold text-charcoal text-sm leading-relaxed">{text}</p>
+          <p className="font-bold text-luxury-ink text-sm leading-relaxed">{text}</p>
         </div>
       </div>
       <InitialsBox value={initials} onChange={onInitialsChange} />
