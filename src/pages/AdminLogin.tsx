@@ -28,21 +28,21 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-light-gray flex items-center justify-center px-4">
+    <div className="min-h-screen bg-luxury-bg flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-lg border-t-4 border-gold p-8">
+        <div className="bg-white rounded-lg shadow-lg border-t-4 border-luxury-gold p-8">
           <div className="text-center mb-8">
-            <h1 className="text-xl font-bold text-forest-green tracking-wide">
+            <h1 className="text-xl font-bold text-luxury-ink tracking-wide">
               Triple J Auto Investment LLC
             </h1>
-            <h2 className="text-2xl font-bold text-charcoal mt-4">
+            <h2 className="text-2xl font-bold text-luxury-ink mt-4">
               Admin Login
             </h2>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-charcoal mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-luxury-ink mb-1">
                 Email
               </label>
               <input
@@ -51,14 +51,14 @@ export default function AdminLogin() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-forest-green"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold"
                 placeholder="admin@triplejautoinvestment.com"
                 disabled={isSubmitting}
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-charcoal mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-luxury-ink mb-1">
                 Password
               </label>
               <input
@@ -67,7 +67,7 @@ export default function AdminLogin() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-forest-green"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold"
                 placeholder="Enter your password"
                 disabled={isSubmitting}
               />
@@ -80,7 +80,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-forest-green text-white py-2.5 rounded-md font-bold hover:bg-green-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-luxury-ink text-white py-2.5 rounded-md font-bold hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Signing in...' : 'Sign In'}
             </button>
