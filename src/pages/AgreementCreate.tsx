@@ -34,13 +34,13 @@ export default function AgreementCreate() {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-forest-green">New Agreement</h1>
+        <h1 className="text-2xl font-bold text-luxury-ink">New Agreement</h1>
       </div>
 
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-6">
           <div>
-            <label className="text-xs font-bold text-forest-green uppercase tracking-wider mb-1 block">Agreement Number</label>
+            <label className="text-xs font-bold text-luxury-ink/50 uppercase tracking-wider mb-1 block">Agreement Number</label>
             <p className="text-sm text-gray-400 italic py-1">Auto-generated on save</p>
           </div>
           <InputLine
@@ -53,7 +53,7 @@ export default function AgreementCreate() {
       </div>
 
       {/* Vehicle Information - Section 3 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Vehicle Information" number="SECTION 3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Year / Make / Model" value={data.vehicle.yearMakeModel} onChange={(v) => updateField('vehicle', 'yearMakeModel', v)} className="col-span-1 md:col-span-2" />
@@ -68,7 +68,7 @@ export default function AgreementCreate() {
       </div>
 
       {/* Rental Term - Section 4.1 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Rental Term" number="SECTION 4.1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Start Date" type="date" value={data.rentalTerm.startDate} onChange={(v) => updateField('rentalTerm', 'startDate', v)} />
@@ -77,7 +77,7 @@ export default function AgreementCreate() {
             <InputLine label="Rental Rate" value={data.rentalTerm.rate} onChange={(v) => updateField('rentalTerm', 'rate', v)} placeholder="e.g. $500.00" />
           </div>
           <div className="mt-4">
-            <label className="text-xs font-bold text-forest-green uppercase tracking-wider mb-2 block">Rate Period</label>
+            <label className="text-xs font-bold text-luxury-ink/50 uppercase tracking-wider mb-2 block">Rate Period</label>
             <div className="flex items-center gap-6 flex-wrap">
               {(['day', 'week', 'month', 'custom'] as const).map((period) => (
                 <label key={period} className="flex items-center gap-2 cursor-pointer">
@@ -87,9 +87,9 @@ export default function AgreementCreate() {
                     value={period}
                     checked={data.rentalTerm.ratePeriod === period}
                     onChange={() => updateField('rentalTerm', 'ratePeriod', period)}
-                    className="accent-forest-green"
+                    className="accent-luxury-gold"
                   />
-                  <span className="text-sm text-charcoal capitalize">{period}</span>
+                  <span className="text-sm text-luxury-ink capitalize">{period}</span>
                 </label>
               ))}
             </div>
@@ -103,7 +103,7 @@ export default function AgreementCreate() {
       </div>
 
       {/* Payment Terms - Section 4.2 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Payment Terms" number="SECTION 4.2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Base Rate" value={data.payment.baseRate} onChange={(v) => updateField('payment', 'baseRate', v)} placeholder="$0.00" />
@@ -122,7 +122,7 @@ export default function AgreementCreate() {
       </div>
 
       {/* Mileage Options - Section 10.1 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Mileage Options" number="SECTION 10.1">
           <div className="mb-4">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -130,20 +130,20 @@ export default function AgreementCreate() {
                 type="checkbox"
                 checked={data.options.unlimitedMileage}
                 onChange={(e) => updateField('options', 'unlimitedMileage', e.target.checked)}
-                className="accent-forest-green w-4 h-4"
+                className="accent-luxury-gold w-4 h-4"
               />
-              <span className="text-sm font-medium text-charcoal">Unlimited Mileage</span>
+              <span className="text-sm font-medium text-luxury-ink">Unlimited Mileage</span>
             </label>
           </div>
           {!data.options.unlimitedMileage && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-4">
               <InputLine label="Mileage Cap" value={data.options.limitedMileageCap} onChange={(v) => updateField('options', 'limitedMileageCap', v)} placeholder="e.g. 1000" />
               <div>
-                <label className="text-xs font-bold text-forest-green uppercase tracking-wider mb-1 block">Cap Period</label>
+                <label className="text-xs font-bold text-luxury-ink/50 uppercase tracking-wider mb-1 block">Cap Period</label>
                 <select
                   value={data.options.limitedMileagePeriod}
                   onChange={(e) => updateField('options', 'limitedMileagePeriod', e.target.value)}
-                  className="w-full border-b border-gray-300 py-1 text-sm text-charcoal bg-transparent focus:outline-none focus:border-forest-green"
+                  className="w-full border-b border-luxury-ink/10 py-1 text-sm text-luxury-ink bg-transparent focus:outline-none focus:border-luxury-gold"
                 >
                   <option value="day">Per Day</option>
                   <option value="week">Per Week</option>
@@ -167,14 +167,14 @@ export default function AgreementCreate() {
           type="button"
           onClick={handleSave}
           disabled={isSaving}
-          className="bg-forest-green text-white px-6 py-2 rounded font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="bg-luxury-ink text-white px-6 py-2 rounded font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
         >
           {isSaving ? 'Saving...' : 'Save Agreement'}
         </button>
         <button
           type="button"
           onClick={handleCancel}
-          className="text-gray-600 hover:text-charcoal px-4 py-2 font-medium transition-colors"
+          className="text-gray-600 hover:text-luxury-ink px-4 py-2 font-medium transition-colors"
         >
           Cancel
         </button>

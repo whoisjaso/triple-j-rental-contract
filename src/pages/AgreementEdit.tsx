@@ -27,7 +27,7 @@ function ReadOnlyField({ label, value }: ReadOnlyFieldProps) {
   return (
     <div className="flex flex-col gap-0.5">
       <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{label}</span>
-      <span className="text-sm text-charcoal">{value || <span className="text-gray-400 italic">—</span>}</span>
+      <span className="text-sm text-luxury-ink">{value || <span className="text-gray-400 italic">—</span>}</span>
     </div>
   )
 }
@@ -119,7 +119,7 @@ export default function AgreementEdit() {
         <button
           type="button"
           onClick={() => navigate('/admin')}
-          className="text-forest-green font-medium hover:underline"
+          className="text-luxury-ink font-medium hover:underline"
         >
           Back to Agreements
         </button>
@@ -131,8 +131,8 @@ export default function AgreementEdit() {
     <div className="p-8 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold text-forest-green">Edit Agreement</h1>
-          <span className="inline-block bg-gold text-white px-3 py-1 rounded text-sm font-bold">
+          <h1 className="text-2xl font-bold text-luxury-ink">Edit Agreement</h1>
+          <span className="inline-block bg-luxury-gold text-white px-3 py-1 rounded text-sm font-bold">
             {agreementNum}
           </span>
           <span className={`inline-block px-2 py-0.5 rounded text-xs font-semibold capitalize ${statusColors[status] || 'bg-gray-200 text-gray-700'}`}>
@@ -142,7 +142,7 @@ export default function AgreementEdit() {
         <button
           type="button"
           onClick={() => navigate('/admin')}
-          className="text-forest-green font-medium hover:underline text-sm"
+          className="text-luxury-ink font-medium hover:underline text-sm"
         >
           Back to Agreements
         </button>
@@ -157,7 +157,7 @@ export default function AgreementEdit() {
       )}
 
       {/* Agreement Date */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
           <InputLine
             label="Agreement Date"
@@ -170,7 +170,7 @@ export default function AgreementEdit() {
       </div>
 
       {/* Vehicle Information - Section 3 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Vehicle Information" number="SECTION 3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Year / Make / Model" value={data.vehicle.yearMakeModel} onChange={(v) => updateField('vehicle', 'yearMakeModel', v)} className="col-span-1 md:col-span-2" readOnly={isSigned} />
@@ -185,7 +185,7 @@ export default function AgreementEdit() {
       </div>
 
       {/* Rental Term - Section 4.1 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Rental Term" number="SECTION 4.1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Start Date" type="date" value={data.rentalTerm.startDate} onChange={(v) => updateField('rentalTerm', 'startDate', v)} readOnly={isSigned} />
@@ -194,7 +194,7 @@ export default function AgreementEdit() {
             <InputLine label="Rental Rate" value={data.rentalTerm.rate} onChange={(v) => updateField('rentalTerm', 'rate', v)} placeholder="e.g. $500.00" readOnly={isSigned} />
           </div>
           <div className="mt-4">
-            <label className="text-xs font-bold text-forest-green uppercase tracking-wider mb-2 block">Rate Period</label>
+            <label className="text-xs font-bold text-luxury-ink/50 uppercase tracking-wider mb-2 block">Rate Period</label>
             <div className="flex items-center gap-6 flex-wrap">
               {(['day', 'week', 'month', 'custom'] as const).map((period) => (
                 <label key={period} className={`flex items-center gap-2 ${isSigned ? 'cursor-default opacity-60' : 'cursor-pointer'}`}>
@@ -206,9 +206,9 @@ export default function AgreementEdit() {
                     onChange={() => !isSigned && updateField('rentalTerm', 'ratePeriod', period)}
                     readOnly={isSigned}
                     disabled={isSigned}
-                    className="accent-forest-green"
+                    className="accent-luxury-gold"
                   />
-                  <span className="text-sm text-charcoal capitalize">{period}</span>
+                  <span className="text-sm text-luxury-ink capitalize">{period}</span>
                 </label>
               ))}
             </div>
@@ -222,7 +222,7 @@ export default function AgreementEdit() {
       </div>
 
       {/* Payment Terms - Section 4.2 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Payment Terms" number="SECTION 4.2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Base Rate" value={data.payment.baseRate} onChange={(v) => updateField('payment', 'baseRate', v)} placeholder="$0.00" readOnly={isSigned} />
@@ -241,7 +241,7 @@ export default function AgreementEdit() {
       </div>
 
       {/* Mileage Options - Section 10.1 */}
-      <div className="bg-white rounded shadow p-6 mb-6">
+      <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <Section title="Mileage Options" number="SECTION 10.1">
           <div className="mb-4">
             <label className={`flex items-center gap-2 ${isSigned ? 'cursor-default opacity-60' : 'cursor-pointer'}`}>
@@ -250,21 +250,21 @@ export default function AgreementEdit() {
                 checked={data.options.unlimitedMileage}
                 onChange={(e) => !isSigned && updateField('options', 'unlimitedMileage', e.target.checked)}
                 disabled={isSigned}
-                className="accent-forest-green w-4 h-4"
+                className="accent-luxury-gold w-4 h-4"
               />
-              <span className="text-sm font-medium text-charcoal">Unlimited Mileage</span>
+              <span className="text-sm font-medium text-luxury-ink">Unlimited Mileage</span>
             </label>
           </div>
           {!data.options.unlimitedMileage && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-4">
               <InputLine label="Mileage Cap" value={data.options.limitedMileageCap} onChange={(v) => updateField('options', 'limitedMileageCap', v)} placeholder="e.g. 1000" readOnly={isSigned} />
               <div>
-                <label className="text-xs font-bold text-forest-green uppercase tracking-wider mb-1 block">Cap Period</label>
+                <label className="text-xs font-bold text-luxury-ink/50 uppercase tracking-wider mb-1 block">Cap Period</label>
                 <select
                   value={data.options.limitedMileagePeriod}
                   onChange={(e) => updateField('options', 'limitedMileagePeriod', e.target.value)}
                   disabled={isSigned}
-                  className="w-full border-b border-gray-300 py-1 text-sm text-charcoal bg-transparent focus:outline-none focus:border-forest-green disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full border-b border-luxury-ink/10 py-1 text-sm text-luxury-ink bg-transparent focus:outline-none focus:border-luxury-gold disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <option value="day">Per Day</option>
                   <option value="week">Per Week</option>
@@ -295,7 +295,7 @@ export default function AgreementEdit() {
             type="button"
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-forest-green text-white px-6 py-2 rounded font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="bg-luxury-ink text-white px-6 py-2 rounded font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {isSaving ? 'Saving...' : 'Save Changes'}
           </button>
@@ -312,7 +312,7 @@ export default function AgreementEdit() {
             type="button"
             onClick={() => setShowLinkModal(true)}
             className="inline-flex items-center gap-2 px-5 py-2 rounded font-medium text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#D4AF37' }}
+            style={{ backgroundColor: '#b89b5e' }}
           >
             <Share2 className="w-4 h-4" />
             {status === 'sent' || status === 'viewed' ? 'View Share Link' : 'Send to Client'}
@@ -322,7 +322,7 @@ export default function AgreementEdit() {
         <button
           type="button"
           onClick={() => navigate('/admin')}
-          className="text-gray-600 hover:text-charcoal px-4 py-2 font-medium transition-colors"
+          className="text-gray-600 hover:text-luxury-ink px-4 py-2 font-medium transition-colors"
         >
           Back to Agreements
         </button>
@@ -354,7 +354,7 @@ export default function AgreementEdit() {
       {isSigned && (
         <div className="bg-green-50 border border-green-200 rounded shadow p-6 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <h2 className="text-lg font-bold text-forest-green">Client Submitted Information</h2>
+            <h2 className="text-lg font-bold text-luxury-ink">Client Submitted Information</h2>
             <span className="inline-flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
               <CheckCircle2 className="w-3.5 h-3.5" />
               Signed
@@ -402,7 +402,7 @@ export default function AgreementEdit() {
             <div className="mb-5">
               <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Client Signature</h3>
               <div className="bg-white rounded-lg border border-green-100 p-4">
-                <div className="border-b-2 border-charcoal pb-2 inline-block">
+                <div className="border-b-2 border-luxury-ink pb-2 inline-block">
                   <img
                     src={data.signatures.renterSig}
                     alt="Client signature"
@@ -433,7 +433,7 @@ export default function AgreementEdit() {
                         : 'bg-gray-50 border-gray-200 text-gray-400'
                     }`}
                   >
-                    <CheckCircle2 className={`w-4 h-4 shrink-0 ${hasInitials ? 'text-forest-green' : 'text-gray-300'}`} />
+                    <CheckCircle2 className={`w-4 h-4 shrink-0 ${hasInitials ? 'text-luxury-gold' : 'text-gray-300'}`} />
                     <span className="font-medium">{ACKNOWLEDGMENT_SECTION_LABELS[key]}</span>
                     {hasInitials && sectionData?.acknowledgmentInitials && (
                       <img
@@ -452,14 +452,14 @@ export default function AgreementEdit() {
 
       {/* Audit Log */}
       {auditLog.length > 0 && (
-        <div className="bg-white rounded shadow p-6">
+        <div className="bg-white rounded-sm border border-luxury-ink/10 p-6">
           <Section title="Activity Log">
             <div className="space-y-3">
               {auditLog.map((entry) => (
                 <div key={entry.id} className="flex items-start gap-3 text-sm">
-                  <div className="w-2 h-2 rounded-full bg-forest-green mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 rounded-full bg-luxury-gold mt-1.5 shrink-0" />
                   <div>
-                    <span className="font-medium text-charcoal capitalize">{entry.action}</span>
+                    <span className="font-medium text-luxury-ink capitalize">{entry.action}</span>
                     <span className="text-gray-400 mx-2">by</span>
                     <span className="text-gray-600">{entry.actor_type}</span>
                     <span className="text-gray-400 ml-3 text-xs">
