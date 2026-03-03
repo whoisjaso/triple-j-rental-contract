@@ -37,7 +37,7 @@ interface FieldProps {
 function Field({ label, name, type = 'text', placeholder, error, required = true, register }: FieldProps) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm font-semibold text-charcoal mb-1.5">
+      <label htmlFor={name} className="block text-sm font-semibold text-luxury-ink mb-1.5">
         {label}
         {required && <span className="text-alert-red ml-0.5">*</span>}
       </label>
@@ -47,7 +47,7 @@ function Field({ label, name, type = 'text', placeholder, error, required = true
         placeholder={placeholder}
         autoComplete="off"
         {...register(name)}
-        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-forest-green transition-colors placeholder:text-gray-400"
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
       />
       {error && (
         <p className="text-alert-red text-sm mt-1">{error}</p>
@@ -91,10 +91,10 @@ export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalSte
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-forest-green">Personal Information</h2>
+      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
+        <h2 className="text-xl font-bold text-luxury-ink">Personal Information</h2>
         <p className="text-gray-600 text-sm mt-1">
           Please enter your information exactly as it appears on your driver&apos;s license.
         </p>
@@ -180,17 +180,17 @@ export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalSte
         </div>
 
         {/* Navigation */}
-        <div className="px-6 py-5 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-4">
+        <div className="px-6 py-5 bg-luxury-bg/30 border-t border-luxury-ink/10 flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={onBack}
-            className="text-forest-green font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all"
+            className="text-luxury-ink font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all"
           >
             Back
           </button>
           <button
             type="submit"
-            className="flex-1 md:flex-none md:min-w-48 bg-forest-green text-white font-semibold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm"
+            className="flex-1 md:flex-none md:min-w-48 bg-luxury-ink text-white font-semibold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm"
           >
             Continue
           </button>

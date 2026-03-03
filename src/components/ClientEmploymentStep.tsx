@@ -41,10 +41,10 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-forest-green">Employment Information</h2>
+      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
+        <h2 className="text-xl font-bold text-luxury-ink">Employment Information</h2>
         <p className="text-gray-600 text-sm mt-1">
           This helps us verify your rental eligibility.
         </p>
@@ -54,7 +54,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
         <div className="px-6 py-5 flex flex-col gap-4">
           {/* Employer Name */}
           <div>
-            <label htmlFor="employerName" className="block text-sm font-semibold text-charcoal mb-1.5">
+            <label htmlFor="employerName" className="block text-sm font-semibold text-luxury-ink mb-1.5">
               Employer Name <span className="text-alert-red">*</span>
             </label>
             <input
@@ -63,7 +63,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
               placeholder="e.g. ABC Transportation LLC"
               autoComplete="organization"
               {...register('employerName')}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-forest-green transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
             />
             {errors.employerName && (
               <p className="text-alert-red text-sm mt-1">{errors.employerName.message}</p>
@@ -72,7 +72,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
 
           {/* Employer Phone */}
           <div>
-            <label htmlFor="employerPhone" className="block text-sm font-semibold text-charcoal mb-1.5">
+            <label htmlFor="employerPhone" className="block text-sm font-semibold text-luxury-ink mb-1.5">
               Employer Phone <span className="text-alert-red">*</span>
             </label>
             <input
@@ -81,7 +81,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
               placeholder="(713) 555-0100"
               autoComplete="off"
               {...register('employerPhone')}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-forest-green transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
             />
             {errors.employerPhone && (
               <p className="text-alert-red text-sm mt-1">{errors.employerPhone.message}</p>
@@ -90,7 +90,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
 
           {/* Monthly Income */}
           <div>
-            <label htmlFor="monthlyIncome" className="block text-sm font-semibold text-charcoal mb-1.5">
+            <label htmlFor="monthlyIncome" className="block text-sm font-semibold text-luxury-ink mb-1.5">
               Approximate Monthly Income <span className="text-alert-red">*</span>
             </label>
             <input
@@ -99,7 +99,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
               placeholder="e.g. $3,200"
               autoComplete="off"
               {...register('monthlyIncome')}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-forest-green transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
             />
             {errors.monthlyIncome && (
               <p className="text-alert-red text-sm mt-1">{errors.monthlyIncome.message}</p>
@@ -108,17 +108,17 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
         </div>
 
         {/* Navigation */}
-        <div className="px-6 py-5 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-4">
+        <div className="px-6 py-5 bg-luxury-bg/30 border-t border-luxury-ink/10 flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={onBack}
-            className="text-forest-green font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all"
+            className="text-luxury-ink font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all"
           >
             Back
           </button>
           <button
             type="submit"
-            className="flex-1 md:flex-none md:min-w-48 bg-forest-green text-white font-semibold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm"
+            className="flex-1 md:flex-none md:min-w-48 bg-luxury-ink text-white font-semibold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm"
           >
             Continue
           </button>
