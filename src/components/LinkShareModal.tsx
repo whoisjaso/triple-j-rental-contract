@@ -136,11 +136,11 @@ export default function LinkShareModal({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <Link className="w-5 h-5 text-forest-green" />
-            <h2 id="link-modal-title" className="text-lg font-bold text-forest-green">
+            <Link className="w-5 h-5 text-luxury-ink" />
+            <h2 id="link-modal-title" className="text-lg font-bold text-luxury-ink">
               Share Agreement
             </h2>
-            <span className="bg-gold text-white text-xs font-bold px-2 py-0.5 rounded">
+            <span className="bg-luxury-gold text-white text-xs font-bold px-2 py-0.5 rounded">
               {agreementNumber}
             </span>
           </div>
@@ -172,7 +172,7 @@ export default function LinkShareModal({
                     value={signUrl}
                     size={180}
                     level="M"
-                    fgColor="#011c12"
+                    fgColor="#1a1a1a"
                     bgColor="#ffffff"
                   />
                 </div>
@@ -183,7 +183,7 @@ export default function LinkShareModal({
 
               {/* URL Copy */}
               <div>
-                <label className="text-xs font-bold text-forest-green uppercase tracking-wider mb-1.5 block">
+                <label className="text-xs font-bold text-luxury-ink/50 uppercase tracking-wider mb-1.5 block">
                   Signing Link
                 </label>
                 <div className="flex items-center gap-2">
@@ -201,7 +201,7 @@ export default function LinkShareModal({
                     className={`shrink-0 flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       copied
                         ? 'bg-green-100 text-green-700 border border-green-200'
-                        : 'bg-forest-green text-white hover:opacity-90'
+                        : 'bg-luxury-ink text-white hover:opacity-90'
                     }`}
                     aria-label={copied ? 'Link copied' : 'Copy link'}
                   >
@@ -290,7 +290,7 @@ export default function LinkShareModal({
                 type="button"
                 onClick={handleGenerate}
                 disabled={loading}
-                className="bg-forest-green text-white px-6 py-2.5 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2 mx-auto"
+                className="bg-luxury-ink text-white px-6 py-2.5 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2 mx-auto"
               >
                 {loading ? (
                   <>
@@ -313,7 +313,7 @@ export default function LinkShareModal({
           <button
             type="button"
             onClick={onClose}
-            className="w-full bg-forest-green text-white py-2.5 rounded-lg font-medium hover:opacity-90 transition-opacity"
+            className="w-full bg-luxury-ink text-white py-2.5 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
             Done
           </button>
