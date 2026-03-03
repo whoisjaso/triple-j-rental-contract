@@ -2,12 +2,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useClientSignStore } from '../stores/clientSignStore'
-
-const phoneRegex = /^\+?[\d\s\-().]{10,}$/
+import { formatPhone, formatCurrency } from '../lib/formatters'
 
 const employmentSchema = z.object({
   employerName: z.string().min(2, "Please enter your employer's name."),
-  employerPhone: z.string().regex(phoneRegex, "Please enter your employer's phone number."),
+  employerPhone: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Please enter your employer's phone number."),
   monthlyIncome: z.string().min(1, 'Please enter your approximate monthly income.'),
 })
 
@@ -24,7 +23,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
 
   const savedRenter = clientData.renter as Partial<EmploymentValues> | undefined
 
-  const { register, handleSubmit, formState: { errors } } = useForm<EmploymentValues>({
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<EmploymentValues>({
     resolver: zodResolver(employmentSchema),
     defaultValues: {
       employerName: savedRenter?.employerName ?? '',
@@ -78,9 +77,11 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
             <input
               id="employerPhone"
               type="tel"
+              inputMode="numeric"
               placeholder="(713) 555-0100"
               autoComplete="off"
-              {...register('employerPhone')}
+              value={watch('employerPhone')}
+              onChange={(e) => setValue('employerPhone', formatPhone(e.target.value), { shouldValidate: true })}
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
             />
             {errors.employerPhone && (
@@ -96,9 +97,11 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
             <input
               id="monthlyIncome"
               type="text"
+              inputMode="numeric"
               placeholder="e.g. $3,200"
               autoComplete="off"
-              {...register('monthlyIncome')}
+              value={watch('monthlyIncome')}
+              onChange={(e) => setValue('monthlyIncome', formatCurrency(e.target.value), { shouldValidate: true })}
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
             />
             {errors.monthlyIncome && (

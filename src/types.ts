@@ -7,7 +7,9 @@ export interface AgreementData {
     dlNumber: string;
     dlExp: string;
     address: string;
-    cityStateZip: string;
+    city: string;
+    state: string;
+    zip: string;
     phonePrimary: string;
     phoneSecondary: string;
     email: string;

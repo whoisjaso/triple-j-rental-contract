@@ -1,9 +1,10 @@
+import type { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useClientSignStore } from '../stores/clientSignStore'
-
-const phoneRegex = /^\+?[\d\s\-().]{10,}$/
+import { formatPhone } from '../lib/formatters'
+import { lookupZip, US_STATES } from '../lib/zipLookup'
 
 const personalInfoSchema = z.object({
   fullName: z.string().min(2, 'Please enter your full legal name as it appears on your ID.'),
@@ -11,8 +12,10 @@ const personalInfoSchema = z.object({
   dlNumber: z.string().min(1, "Driver's license number is required."),
   dlExp: z.string().min(1, 'License expiration date is required.'),
   address: z.string().min(5, 'Please enter your full street address.'),
-  cityStateZip: z.string().min(5, 'Please enter your city, state, and ZIP code.'),
-  phonePrimary: z.string().regex(phoneRegex, 'Please enter a valid phone number.'),
+  zip: z.string().regex(/^\d{5}$/, 'Please enter a valid 5-digit ZIP code.'),
+  city: z.string().min(2, 'City is required.'),
+  state: z.string().min(2, 'State is required.'),
+  phonePrimary: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, 'Please enter a valid 10-digit phone number.'),
   phoneSecondary: z.string().optional(),
   email: z.string().email('Please enter a valid email address.'),
 })
@@ -32,9 +35,10 @@ interface FieldProps {
   error?: string
   required?: boolean
   register: ReturnType<typeof useForm<PersonalInfoValues>>['register']
+  inputMode?: 'text' | 'numeric' | 'email' | 'tel'
 }
 
-function Field({ label, name, type = 'text', placeholder, error, required = true, register }: FieldProps) {
+function Field({ label, name, type = 'text', placeholder, error, required = true, register, inputMode }: FieldProps) {
   return (
     <div>
       <label htmlFor={name} className="block text-sm font-semibold text-luxury-ink mb-1.5">
@@ -46,6 +50,7 @@ function Field({ label, name, type = 'text', placeholder, error, required = true
         type={type}
         placeholder={placeholder}
         autoComplete="off"
+        inputMode={inputMode}
         {...register(name)}
         className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
       />
@@ -56,13 +61,16 @@ function Field({ label, name, type = 'text', placeholder, error, required = true
   )
 }
 
+const inputClassName = "w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+const selectClassName = "w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors bg-white"
+
 export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalStepProps) {
   const clientData = useClientSignStore((s) => s.clientData)
   const updateClientField = useClientSignStore((s) => s.updateClientField)
 
   const savedRenter = clientData.renter as Partial<PersonalInfoValues> | undefined
 
-  const { register, handleSubmit, formState: { errors } } = useForm<PersonalInfoValues>({
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<PersonalInfoValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
       fullName: savedRenter?.fullName ?? '',
@@ -70,12 +78,26 @@ export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalSte
       dlNumber: savedRenter?.dlNumber ?? '',
       dlExp: savedRenter?.dlExp ?? '',
       address: savedRenter?.address ?? '',
-      cityStateZip: savedRenter?.cityStateZip ?? '',
+      zip: savedRenter?.zip ?? '',
+      city: savedRenter?.city ?? '',
+      state: savedRenter?.state ?? '',
       phonePrimary: savedRenter?.phonePrimary ?? '',
       phoneSecondary: savedRenter?.phoneSecondary ?? '',
       email: savedRenter?.email ?? '',
     },
   })
+
+  async function handleZipChange(e: ChangeEvent<HTMLInputElement>) {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 5)
+    setValue('zip', digits, { shouldValidate: digits.length === 5 })
+    if (digits.length === 5) {
+      const result = await lookupZip(digits)
+      if (result) {
+        setValue('city', result.city, { shouldValidate: true })
+        setValue('state', result.state, { shouldValidate: true })
+      }
+    }
+  }
 
   function onSubmit(values: PersonalInfoValues) {
     updateClientField('renter', 'fullName', values.fullName)
@@ -83,7 +105,9 @@ export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalSte
     updateClientField('renter', 'dlNumber', values.dlNumber)
     updateClientField('renter', 'dlExp', values.dlExp)
     updateClientField('renter', 'address', values.address)
-    updateClientField('renter', 'cityStateZip', values.cityStateZip)
+    updateClientField('renter', 'zip', values.zip)
+    updateClientField('renter', 'city', values.city)
+    updateClientField('renter', 'state', values.state)
     updateClientField('renter', 'phonePrimary', values.phonePrimary)
     updateClientField('renter', 'phoneSecondary', values.phoneSecondary ?? '')
     updateClientField('renter', 'email', values.email)
@@ -141,32 +165,110 @@ export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalSte
               error={errors.address?.message}
             />
           </div>
-          <div className="md:col-span-2">
-            <Field
-              label="City, State, ZIP"
-              name="cityStateZip"
-              placeholder="e.g. Houston, TX 77075"
-              register={register}
-              error={errors.cityStateZip?.message}
-            />
+
+          {/* ZIP / City / State — split fields with auto-lookup */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* ZIP Code */}
+            <div>
+              <label htmlFor="zip" className="block text-sm font-semibold text-luxury-ink mb-1.5">
+                ZIP Code<span className="text-alert-red ml-0.5">*</span>
+              </label>
+              <input
+                id="zip"
+                type="text"
+                inputMode="numeric"
+                placeholder="77075"
+                autoComplete="off"
+                maxLength={5}
+                value={watch('zip')}
+                onChange={handleZipChange}
+                className={inputClassName}
+              />
+              {errors.zip && (
+                <p className="text-alert-red text-sm mt-1">{errors.zip.message}</p>
+              )}
+            </div>
+
+            {/* City */}
+            <div>
+              <label htmlFor="city" className="block text-sm font-semibold text-luxury-ink mb-1.5">
+                City<span className="text-alert-red ml-0.5">*</span>
+              </label>
+              <input
+                id="city"
+                type="text"
+                placeholder="Houston"
+                autoComplete="off"
+                value={watch('city')}
+                onChange={(e) => setValue('city', e.target.value, { shouldValidate: true })}
+                className={inputClassName}
+              />
+              {errors.city && (
+                <p className="text-alert-red text-sm mt-1">{errors.city.message}</p>
+              )}
+            </div>
+
+            {/* State */}
+            <div>
+              <label htmlFor="state" className="block text-sm font-semibold text-luxury-ink mb-1.5">
+                State<span className="text-alert-red ml-0.5">*</span>
+              </label>
+              <select
+                id="state"
+                value={watch('state')}
+                onChange={(e) => setValue('state', e.target.value, { shouldValidate: true })}
+                className={selectClassName}
+              >
+                <option value="">Select state</option>
+                {US_STATES.map((s) => (
+                  <option key={s.value} value={s.value}>{s.label}</option>
+                ))}
+              </select>
+              {errors.state && (
+                <p className="text-alert-red text-sm mt-1">{errors.state.message}</p>
+              )}
+            </div>
           </div>
-          <Field
-            label="Primary Phone"
-            name="phonePrimary"
-            type="tel"
-            placeholder="(832) 555-0100"
-            register={register}
-            error={errors.phonePrimary?.message}
-          />
-          <Field
-            label="Secondary Phone"
-            name="phoneSecondary"
-            type="tel"
-            placeholder="Optional"
-            required={false}
-            register={register}
-            error={errors.phoneSecondary?.message}
-          />
+
+          {/* Phone fields — controlled with formatPhone */}
+          <div>
+            <label htmlFor="phonePrimary" className="block text-sm font-semibold text-luxury-ink mb-1.5">
+              Primary Phone<span className="text-alert-red ml-0.5">*</span>
+            </label>
+            <input
+              id="phonePrimary"
+              type="tel"
+              inputMode="numeric"
+              placeholder="(832) 555-0100"
+              autoComplete="off"
+              value={watch('phonePrimary')}
+              onChange={(e) => setValue('phonePrimary', formatPhone(e.target.value), { shouldValidate: true })}
+              className={inputClassName}
+            />
+            {errors.phonePrimary && (
+              <p className="text-alert-red text-sm mt-1">{errors.phonePrimary.message}</p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="phoneSecondary" className="block text-sm font-semibold text-luxury-ink mb-1.5">
+              Secondary Phone
+            </label>
+            <input
+              id="phoneSecondary"
+              type="tel"
+              inputMode="numeric"
+              placeholder="Optional"
+              autoComplete="off"
+              value={watch('phoneSecondary') ?? ''}
+              onChange={(e) => setValue('phoneSecondary', formatPhone(e.target.value), { shouldValidate: true })}
+              className={inputClassName}
+            />
+            {errors.phoneSecondary && (
+              <p className="text-alert-red text-sm mt-1">{errors.phoneSecondary.message}</p>
+            )}
+          </div>
+
+          {/* Email */}
           <div className="md:col-span-2">
             <Field
               label="Email Address"
@@ -175,6 +277,7 @@ export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalSte
               placeholder="your@email.com"
               register={register}
               error={errors.email?.message}
+              inputMode="email"
             />
           </div>
         </div>

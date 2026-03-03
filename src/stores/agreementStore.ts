@@ -6,7 +6,7 @@ const initialData: AgreementData = {
   agreementDate: new Date().toLocaleDateString(),
   renter: {
     fullName: '', dob: '', dlNumber: '', dlExp: '',
-    address: '', cityStateZip: '', phonePrimary: '', phoneSecondary: '',
+    address: '', city: '', state: '', zip: '', phonePrimary: '', phoneSecondary: '',
     email: '', emergencyName: '', emergencyPhone: '', emergencyRelation: '',
     employerName: '', employerPhone: '', monthlyIncome: ''
   },

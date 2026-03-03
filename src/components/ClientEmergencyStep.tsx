@@ -2,13 +2,23 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useClientSignStore } from '../stores/clientSignStore'
+import { formatPhone } from '../lib/formatters'
 
-const phoneRegex = /^\+?[\d\s\-().]{10,}$/
+const RELATIONSHIP_OPTIONS = [
+  'Spouse',
+  'Parent',
+  'Child',
+  'Sibling',
+  'Friend',
+  'Employer',
+  'Other',
+] as const
 
 const emergencyContactSchema = z.object({
   emergencyName: z.string().min(2, "Please enter your emergency contact's full name."),
-  emergencyPhone: z.string().regex(phoneRegex, 'Please enter a valid phone number for your emergency contact.'),
-  emergencyRelation: z.string().min(1, 'Please specify your relationship to your emergency contact.'),
+  emergencyPhone: z.string().regex(/^\(\d{3}\) \d{3}-\d{4}$/, 'Please enter a valid phone number.'),
+  emergencyRelation: z.string().min(1, 'Please specify your relationship.'),
+  emergencyRelationOther: z.string().optional(),
 })
 
 type EmergencyContactValues = z.infer<typeof emergencyContactSchema>
@@ -24,19 +34,25 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
 
   const savedRenter = clientData.renter as Partial<EmergencyContactValues> | undefined
 
-  const { register, handleSubmit, formState: { errors } } = useForm<EmergencyContactValues>({
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<EmergencyContactValues>({
     resolver: zodResolver(emergencyContactSchema),
     defaultValues: {
       emergencyName: savedRenter?.emergencyName ?? '',
       emergencyPhone: savedRenter?.emergencyPhone ?? '',
       emergencyRelation: savedRenter?.emergencyRelation ?? '',
+      emergencyRelationOther: '',
     },
   })
 
+  const selectedRelation = watch('emergencyRelation')
+
   function onSubmit(values: EmergencyContactValues) {
+    const finalRelation = values.emergencyRelation === 'Other'
+      ? (values.emergencyRelationOther || 'Other')
+      : values.emergencyRelation
     updateClientField('renter', 'emergencyName', values.emergencyName)
     updateClientField('renter', 'emergencyPhone', values.emergencyPhone)
-    updateClientField('renter', 'emergencyRelation', values.emergencyRelation)
+    updateClientField('renter', 'emergencyRelation', finalRelation)
     onNext()
   }
 
@@ -78,9 +94,11 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
             <input
               id="emergencyPhone"
               type="tel"
+              inputMode="numeric"
               placeholder="(832) 555-0100"
               autoComplete="off"
-              {...register('emergencyPhone')}
+              value={watch('emergencyPhone')}
+              onChange={(e) => setValue('emergencyPhone', formatPhone(e.target.value), { shouldValidate: true })}
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
             />
             {errors.emergencyPhone && (
@@ -93,18 +111,37 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
             <label htmlFor="emergencyRelation" className="block text-sm font-semibold text-luxury-ink mb-1.5">
               Relationship <span className="text-alert-red">*</span>
             </label>
-            <input
+            <select
               id="emergencyRelation"
-              type="text"
-              placeholder="e.g. Spouse, Parent, Sibling"
-              autoComplete="off"
               {...register('emergencyRelation')}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
-            />
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors bg-white"
+            >
+              <option value="">Select relationship...</option>
+              {RELATIONSHIP_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
             {errors.emergencyRelation && (
               <p className="text-alert-red text-sm mt-1">{errors.emergencyRelation.message}</p>
             )}
           </div>
+
+          {/* Custom Relationship (shown when "Other" is selected) */}
+          {selectedRelation === 'Other' && (
+            <div>
+              <label htmlFor="emergencyRelationOther" className="block text-sm font-semibold text-luxury-ink mb-1.5">
+                Please specify <span className="text-alert-red">*</span>
+              </label>
+              <input
+                id="emergencyRelationOther"
+                type="text"
+                placeholder="e.g. Neighbor, Coworker"
+                autoComplete="off"
+                {...register('emergencyRelationOther')}
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+              />
+            </div>
+          )}
         </div>
 
         {/* Navigation */}

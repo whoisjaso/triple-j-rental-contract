@@ -82,7 +82,9 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
           dlNumber: renter?.dlNumber ?? '',
           dlExp: renter?.dlExp ?? '',
           address: renter?.address ?? '',
-          cityStateZip: renter?.cityStateZip ?? '',
+          city: renter?.city ?? '',
+          state: renter?.state ?? '',
+          zip: renter?.zip ?? '',
           phonePrimary: renter?.phonePrimary ?? '',
           phoneSecondary: renter?.phoneSecondary ?? '',
           email: renter?.email ?? '',
@@ -197,7 +199,9 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
           <ReviewRow label="Driver's License" value={renter?.dlNumber} />
           <ReviewRow label="License Expiration" value={renter?.dlExp} />
           <ReviewRow label="Address" value={renter?.address} />
-          <ReviewRow label="City, State, ZIP" value={renter?.cityStateZip} />
+          <ReviewRow label="City" value={renter?.city} />
+          <ReviewRow label="State" value={renter?.state} />
+          <ReviewRow label="ZIP" value={renter?.zip} />
           <ReviewRow label="Primary Phone" value={renter?.phonePrimary} />
           <ReviewRow label="Secondary Phone" value={renter?.phoneSecondary} />
           <ReviewRow label="Email" value={renter?.email} />
