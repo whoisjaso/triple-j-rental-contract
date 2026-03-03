@@ -10,7 +10,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
       {/* Mobile: simplified text indicator */}
       <div className="md:hidden text-sm text-gray-600 font-medium text-center mb-4">
         Step {currentStep + 1} of {totalSteps}:{' '}
-        <span className="text-forest-green font-semibold">{stepLabels[currentStep]}</span>
+        <span className="text-luxury-gold font-semibold">{stepLabels[currentStep]}</span>
       </div>
 
       {/* Desktop: full step bar */}
@@ -27,7 +27,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
                 {index > 0 && (
                   <div
                     className={`flex-1 h-0.5 ${
-                      isCompleted || isCurrent ? 'bg-forest-green' : 'bg-gray-300'
+                      isCompleted || isCurrent ? 'bg-luxury-gold' : 'bg-gray-300'
                     }`}
                   />
                 )}
@@ -37,9 +37,9 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
                   className={`
                     flex-shrink-0 flex items-center justify-center rounded-full font-bold text-sm transition-all
                     ${isCompleted
-                      ? 'w-8 h-8 bg-forest-green text-white'
+                      ? 'w-8 h-8 bg-luxury-gold text-white'
                       : isCurrent
-                      ? 'w-9 h-9 bg-forest-green text-white ring-2 ring-forest-green ring-offset-2'
+                      ? 'w-9 h-9 bg-luxury-gold text-white ring-2 ring-luxury-gold ring-offset-2'
                       : 'w-8 h-8 border-2 border-gray-300 text-gray-400 bg-white'
                     }
                   `}
@@ -64,7 +64,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
                 {index < totalSteps - 1 && (
                   <div
                     className={`flex-1 h-0.5 ${
-                      isCompleted ? 'bg-forest-green' : 'bg-gray-300'
+                      isCompleted ? 'bg-luxury-gold' : 'bg-gray-300'
                     }`}
                   />
                 )}
@@ -74,7 +74,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
               <span
                 className={`mt-1.5 text-xs font-medium text-center leading-tight ${
                   isCurrent
-                    ? 'text-forest-green'
+                    ? 'text-luxury-gold'
                     : isFuture
                     ? 'text-gray-400'
                     : 'text-gray-500'
