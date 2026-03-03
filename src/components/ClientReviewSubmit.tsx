@@ -19,16 +19,16 @@ function ReviewRow({ label, value }: { label: string; value?: string | null }) {
   return (
     <div className="flex flex-col gap-0.5">
       <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{label}</span>
-      <span className="text-sm text-charcoal">{value}</span>
+      <span className="text-sm text-luxury-ink">{value}</span>
     </div>
   )
 }
 
 function ReviewSection({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="rounded-xl border border-gray-200 overflow-hidden">
-      <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-200">
-        <h4 className="text-sm font-bold text-forest-green uppercase tracking-wide">{title}</h4>
+    <div className="rounded-xl border border-luxury-ink/10 overflow-hidden">
+      <div className="px-4 py-2.5 bg-luxury-bg/30 border-b border-luxury-ink/10">
+        <h4 className="text-sm font-bold text-luxury-ink/50 uppercase tracking-wide">{title}</h4>
       </div>
       <div className="px-4 py-3 grid grid-cols-1 gap-3">{children}</div>
     </div>
@@ -167,10 +167,10 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-forest-green">Review &amp; Submit</h2>
+      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
+        <h2 className="text-xl font-bold text-luxury-ink">Review &amp; Submit</h2>
         <p className="text-gray-600 text-sm mt-1">
           Please review your information below. Once submitted, your agreement will be finalized.
         </p>
@@ -187,7 +187,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="text-xs text-forest-green font-semibold hover:underline"
+              className="text-xs text-luxury-gold font-semibold hover:underline"
             >
               Edit
             </button>
@@ -209,7 +209,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="text-xs text-forest-green font-semibold hover:underline"
+              className="text-xs text-luxury-gold font-semibold hover:underline"
             >
               Edit
             </button>
@@ -225,7 +225,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
             <button
               type="button"
               onClick={() => setStep(3)}
-              className="text-xs text-forest-green font-semibold hover:underline"
+              className="text-xs text-luxury-gold font-semibold hover:underline"
             >
               Edit
             </button>
@@ -241,13 +241,13 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
             <button
               type="button"
               onClick={() => setStep(4)}
-              className="text-xs text-forest-green font-semibold hover:underline"
+              className="text-xs text-luxury-gold font-semibold hover:underline"
             >
               Edit
             </button>
           </div>
           {signatureImageUrl ? (
-            <div className="border-b-2 border-charcoal pb-2 pt-1">
+            <div className="border-b-2 border-luxury-ink pb-2 pt-1">
               <img
                 src={signatureImageUrl}
                 alt="Your signature"
@@ -256,9 +256,9 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
               <p className="text-xs text-gray-400 mt-1">Signed electronically</p>
             </div>
           ) : signatureType === 'type' && typedSignatureName ? (
-            <div className="border-b-2 border-charcoal pb-2">
+            <div className="border-b-2 border-luxury-ink pb-2">
               <p
-                className="text-charcoal"
+                className="text-luxury-ink"
                 style={{ fontFamily: '"Dancing Script", cursive', fontSize: '2rem', lineHeight: '1.3' }}
               >
                 {typedSignatureName}
@@ -278,8 +278,8 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
             <div className="flex flex-col gap-2">
               {acknowledgedSections.map((key) => (
                 <div key={key} className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-forest-green shrink-0" />
-                  <span className="text-sm text-charcoal">
+                  <CheckCircle2 className="w-4 h-4 text-luxury-gold shrink-0" />
+                  <span className="text-sm text-luxury-ink">
                     {ACKNOWLEDGMENT_LABELS[key] ?? key}
                   </span>
                 </div>
@@ -295,7 +295,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
             <button
               type="button"
               onClick={handleSubmit}
-              className="mt-2 text-sm text-forest-green font-semibold hover:underline"
+              className="mt-2 text-sm text-luxury-gold font-semibold hover:underline"
             >
               Try again
             </button>
@@ -304,12 +304,12 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
       </div>
 
       {/* Navigation */}
-      <div className="px-6 py-5 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-4">
+      <div className="px-6 py-5 bg-luxury-bg/30 border-t border-luxury-ink/10 flex items-center justify-between gap-4">
         <button
           type="button"
           onClick={onBack}
           disabled={submitting}
-          className="text-forest-green font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all disabled:opacity-40"
+          className="text-luxury-ink font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all disabled:opacity-40"
         >
           Back
         </button>
@@ -317,7 +317,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
           type="button"
           onClick={handleSubmit}
           disabled={submitting}
-          className="flex-1 md:flex-none md:min-w-48 bg-forest-green text-white font-bold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-2"
+          className="flex-1 md:flex-none md:min-w-48 bg-luxury-ink text-white font-bold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-2"
         >
           {submitting ? (
             <>

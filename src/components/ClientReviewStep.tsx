@@ -13,18 +13,18 @@ interface FieldRowProps {
 function FieldRow({ label, value }: FieldRowProps) {
   const displayValue = value === true ? 'Yes' : value === false ? 'No' : (value ?? '—')
   return (
-    <div className="flex flex-col sm:flex-row sm:gap-4 py-2 border-b border-gray-100 last:border-0">
+    <div className="flex flex-col sm:flex-row sm:gap-4 py-2 border-b border-luxury-ink/10 last:border-0">
       <dt className="text-xs font-semibold text-gray-500 uppercase tracking-wide sm:w-44 sm:shrink-0">
         {label}
       </dt>
-      <dd className="text-sm text-charcoal mt-0.5 sm:mt-0">{String(displayValue)}</dd>
+      <dd className="text-sm text-luxury-ink mt-0.5 sm:mt-0">{String(displayValue)}</dd>
     </div>
   )
 }
 
 function SectionHeading({ children }: { children: string }) {
   return (
-    <h3 className="text-sm font-bold text-forest-green uppercase tracking-wider mt-6 mb-2 pb-1 border-b border-forest-green/20">
+    <h3 className="text-sm font-bold text-luxury-ink/50 uppercase tracking-wider mt-6 mb-2 pb-1 border-b border-luxury-ink/20">
       {children}
     </h3>
   )
@@ -39,10 +39,10 @@ export default function ClientReviewStep({ agreementData, onNext }: ClientReview
       : rentalTerm.ratePeriod
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-forest-green">Review Your Agreement</h2>
+      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
+        <h2 className="text-xl font-bold text-luxury-ink">Review Your Agreement</h2>
         <p className="text-gray-500 text-sm mt-1">
           Please review the terms of your vehicle rental agreement below.
         </p>
@@ -113,11 +113,11 @@ export default function ClientReviewStep({ agreementData, onNext }: ClientReview
       </div>
 
       {/* CTA */}
-      <div className="px-6 py-5 bg-gray-50 border-t border-gray-100">
+      <div className="px-6 py-5 bg-luxury-bg/30 border-t border-luxury-ink/10">
         <button
           type="button"
           onClick={onNext}
-          className="w-full bg-forest-green text-white font-semibold py-3.5 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm"
+          className="w-full bg-luxury-ink text-white font-semibold py-3.5 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm"
         >
           I&apos;ve Reviewed the Terms — Continue
         </button>
