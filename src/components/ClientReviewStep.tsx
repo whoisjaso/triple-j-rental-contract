@@ -40,8 +40,16 @@ export default function ClientReviewStep({ agreementData, onNext }: ClientReview
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
+      {/* Hero brand crest */}
+      <div className="flex flex-col items-center pt-8 pb-4">
+        <img src="/logo-crest.png" alt="JJAI" className="h-[120px] w-auto mb-2" />
+        <div className="text-base font-serif font-semibold text-luxury-gold tracking-wide">
+          Triple J Auto Investment LLC
+        </div>
+      </div>
+
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
+      <div className="px-6 pt-2 pb-4 border-b border-luxury-ink/10">
         <h2 className="text-xl font-bold text-luxury-ink">Review Your Agreement</h2>
         <p className="text-gray-500 text-sm mt-1">
           Please review the terms of your vehicle rental agreement below.

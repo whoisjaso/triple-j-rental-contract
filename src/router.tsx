@@ -1,5 +1,4 @@
 import { createBrowserRouter, Navigate } from 'react-router'
-import AdminLogin from './pages/AdminLogin'
 import AdminLayout from './pages/AdminLayout'
 import AgreementList from './pages/AgreementList'
 import AgreementCreate from './pages/AgreementCreate'
@@ -9,10 +8,6 @@ import ClientSign from './pages/ClientSign'
 import ClientSignComplete from './pages/ClientSignComplete'
 
 export const router = createBrowserRouter([
-  {
-    path: '/login',
-    element: <AdminLogin />,
-  },
   {
     path: '/admin',
     element: <AdminLayout />,

@@ -10,7 +10,7 @@ export default function ClientSignComplete() {
     <div className="min-h-screen bg-luxury-bg flex flex-col">
       {/* Branded header */}
       <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center shadow-sm">
-        <div className="text-2xl font-bold text-luxury-gold tracking-widest leading-none">JJAI</div>
+        <img src="/logo-crest.png" alt="JJAI" className="h-[48px] w-auto" />
         <div className="text-sm font-semibold text-luxury-ink mt-0.5">Triple J Auto Investment LLC</div>
       </header>
 
@@ -20,8 +20,8 @@ export default function ClientSignComplete() {
 
           {/* Brand mark */}
           <div className="mb-6">
-            <div className="text-3xl font-bold text-luxury-gold tracking-widest leading-none">JJAI</div>
-            <div className="text-xs font-semibold text-luxury-ink mt-0.5 tracking-wide">
+            <img src="/logo-crest.png" alt="JJAI" className="h-[80px] w-auto" />
+            <div className="text-xs font-semibold text-luxury-ink mt-1 tracking-wide">
               Triple J Auto Investment LLC
             </div>
           </div>

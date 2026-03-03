@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { Share2, CheckCircle2 } from 'lucide-react'
-import { useAuth } from '../lib/auth'
 import { useAgreementStore } from '../stores/agreementStore'
 import { getAgreement, updateAgreement, getAuditLog } from '../lib/agreements'
 import { Section } from '../components/Section'
@@ -53,7 +52,6 @@ interface AuditEntry {
 export default function AgreementEdit() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { user } = useAuth()
   const { data, updateField, setData, setAgreementMeta, isSaving, setSaving } = useAgreementStore()
 
   const [loading, setLoading] = useState(true)
@@ -86,12 +84,12 @@ export default function AgreementEdit() {
   }, [id, setData, setAgreementMeta])
 
   async function handleSave() {
-    if (!user || !id) return
+    if (!id) return
     setSaving(true)
     setError(null)
     setSaveSuccess(false)
     try {
-      await updateAgreement(id, data, user.id)
+      await updateAgreement(id, data, 'admin')
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
       // Refresh audit log
@@ -370,7 +368,15 @@ export default function AgreementEdit() {
               <ReadOnlyField label="Driver's License" value={data.renter?.dlNumber} />
               <ReadOnlyField label="License Expiration" value={data.renter?.dlExp} />
               <ReadOnlyField label="Address" value={data.renter?.address} />
-              <ReadOnlyField label="City, State, ZIP" value={data.renter?.cityStateZip} />
+              {data.renter?.city ? (
+                <>
+                  <ReadOnlyField label="City" value={data.renter?.city} />
+                  <ReadOnlyField label="State" value={data.renter?.state} />
+                  <ReadOnlyField label="ZIP" value={data.renter?.zip} />
+                </>
+              ) : (
+                <ReadOnlyField label="City, State, ZIP" value={(data.renter as any)?.cityStateZip} />
+              )}
               <ReadOnlyField label="Primary Phone" value={data.renter?.phonePrimary} />
               <ReadOnlyField label="Secondary Phone" value={data.renter?.phoneSecondary} />
               <ReadOnlyField label="Email" value={data.renter?.email} />

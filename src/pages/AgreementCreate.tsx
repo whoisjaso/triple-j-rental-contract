@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { useAuth } from '../lib/auth'
 import { useAgreementStore } from '../stores/agreementStore'
 import { createAgreement } from '../lib/agreements'
 import { Section } from '../components/Section'
@@ -8,16 +7,14 @@ import { InputLine } from '../components/InputLine'
 
 export default function AgreementCreate() {
   const navigate = useNavigate()
-  const { user } = useAuth()
   const { data, updateField, reset, isSaving, setSaving } = useAgreementStore()
   const [error, setError] = useState<string | null>(null)
 
   async function handleSave() {
-    if (!user) return
     setSaving(true)
     setError(null)
     try {
-      const { id } = await createAgreement(data, user.id)
+      const { id } = await createAgreement(data, 'admin')
       navigate(`/admin/agreements/${id}`)
     } catch (err: any) {
       setError(err.message || 'Failed to save agreement')

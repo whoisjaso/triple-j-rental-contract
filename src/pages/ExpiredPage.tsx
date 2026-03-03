@@ -3,9 +3,7 @@ export default function ExpiredPage() {
     <div className="min-h-screen bg-luxury-bg flex flex-col items-center justify-center px-6 py-12">
       {/* Brand Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-luxury-ink mb-4 shadow-lg">
-          <span className="text-luxury-gold font-black text-2xl tracking-tight">JJAI</span>
-        </div>
+        <img src="/logo-crest.png" alt="JJAI" className="h-[80px] w-auto mb-4" />
         <p className="text-sm font-semibold text-gray-500 mt-1">
           Triple J Auto Investment LLC
         </p>
