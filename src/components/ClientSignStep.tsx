@@ -157,7 +157,7 @@ function DrawCanvas({ height, onSave, onClear, label }: DrawCanvasProps) {
         <p className="text-xs text-gray-400 italic mb-1">{label}</p>
       )}
       <div
-        className="border-2 border-forest-green rounded-lg bg-white shadow-sm relative overflow-hidden"
+        className="border-2 border-luxury-ink rounded-lg bg-white shadow-sm relative overflow-hidden"
         style={{ height: `${height}px` }}
       >
         <canvas
@@ -281,10 +281,10 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-forest-green">Sign Agreement</h2>
+      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
+        <h2 className="text-xl font-bold text-luxury-ink">Sign Agreement</h2>
         <p className="text-gray-600 text-sm mt-1">
           Provide your signature and initials to complete the agreement.
         </p>
@@ -294,7 +294,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
 
         {/* ---- Signature Section ---- */}
         <div>
-          <h3 className="text-base font-bold text-charcoal mb-3">Your Signature</h3>
+          <h3 className="text-base font-bold text-luxury-ink mb-3">Your Signature</h3>
 
           {/* Tab bar */}
           <div className="flex rounded-lg border border-gray-200 overflow-hidden mb-4">
@@ -303,8 +303,8 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
               onClick={() => { setSignatureType('draw'); setValidationError(null) }}
               className={`flex-1 py-2.5 text-sm font-semibold transition-colors ${
                 signatureType === 'draw'
-                  ? 'bg-forest-green text-white'
-                  : 'bg-white text-forest-green border-r border-gray-200 hover:bg-gray-50'
+                  ? 'bg-luxury-ink text-white'
+                  : 'bg-white text-luxury-ink border-r border-gray-200 hover:bg-gray-50'
               }`}
             >
               Draw
@@ -314,8 +314,8 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
               onClick={() => { setSignatureType('type'); setValidationError(null) }}
               className={`flex-1 py-2.5 text-sm font-semibold transition-colors ${
                 signatureType === 'type'
-                  ? 'bg-forest-green text-white'
-                  : 'bg-white text-forest-green hover:bg-gray-50'
+                  ? 'bg-luxury-ink text-white'
+                  : 'bg-white text-luxury-ink hover:bg-gray-50'
               }`}
             >
               Type
@@ -336,7 +336,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
           {signatureType === 'type' && (
             <div className="flex flex-col gap-3">
               <div>
-                <label htmlFor="typed-sig" className="block text-sm font-semibold text-charcoal mb-1.5">
+                <label htmlFor="typed-sig" className="block text-sm font-semibold text-luxury-ink mb-1.5">
                   Type your full legal name
                 </label>
                 <input
@@ -346,14 +346,14 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
                   onChange={(e) => { setTypedSignatureName(e.target.value); setValidationError(null) }}
                   placeholder="Your full legal name"
                   autoComplete="off"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-forest-green transition-colors placeholder:text-gray-400"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
                 />
               </div>
               {/* Live preview */}
               {typedSignatureName && (
-                <div className="border-b-2 border-charcoal pb-2 mt-1">
+                <div className="border-b-2 border-luxury-ink pb-2 mt-1">
                   <p
-                    className="text-charcoal"
+                    className="text-luxury-ink"
                     style={{ fontFamily: '"Dancing Script", cursive', fontSize: '2rem', lineHeight: '1.3' }}
                   >
                     {typedSignatureName}
@@ -369,7 +369,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
 
         {/* ---- Initials Section ---- */}
         <div>
-          <h3 className="text-base font-bold text-charcoal mb-1">Your Initials</h3>
+          <h3 className="text-base font-bold text-luxury-ink mb-1">Your Initials</h3>
           <p className="text-gray-500 text-sm mb-3">
             Draw your initials once below. Then tap the checkbox next to each section to confirm you&apos;ve read and understood it.
           </p>
@@ -384,7 +384,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
 
         {/* ---- Acknowledgment Sections ---- */}
         <div>
-          <h3 className="text-base font-bold text-charcoal mb-3">Acknowledgments</h3>
+          <h3 className="text-base font-bold text-luxury-ink mb-3">Acknowledgments</h3>
 
           {!drawnInitials && (
             <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-3">
@@ -402,7 +402,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
                   key={section.key}
                   className={`flex items-start gap-3 p-4 rounded-xl border transition-colors ${
                     isChecked
-                      ? 'border-forest-green bg-green-50'
+                      ? 'border-luxury-gold bg-luxury-bg/30'
                       : 'border-gray-200 bg-gray-50'
                   } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
@@ -416,10 +416,10 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
                         setValidationError(null)
                       }
                     }}
-                    className="mt-0.5 h-5 w-5 shrink-0 rounded border-gray-400 accent-forest-green cursor-pointer disabled:cursor-not-allowed"
+                    className="mt-0.5 h-5 w-5 shrink-0 rounded border-gray-400 accent-luxury-gold cursor-pointer disabled:cursor-not-allowed"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-charcoal text-sm mb-0.5">{section.label}</p>
+                    <p className="font-semibold text-luxury-ink text-sm mb-0.5">{section.label}</p>
                     <p className="text-gray-600 text-sm leading-relaxed">{section.text}</p>
                     {/* Initials thumbnail shown when checked */}
                     {isChecked && drawnInitials && (
@@ -429,7 +429,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
                           alt="Your initials"
                           className="h-8 object-contain border border-gray-200 rounded bg-white px-1"
                         />
-                        <span className="text-xs text-forest-green font-semibold">Initialed</span>
+                        <span className="text-xs text-luxury-gold font-semibold">Initialed</span>
                       </div>
                     )}
                   </div>
@@ -448,11 +448,11 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
       </div>
 
       {/* Navigation */}
-      <div className="px-6 py-5 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-4">
+      <div className="px-6 py-5 bg-luxury-bg/30 border-t border-luxury-ink/10 flex items-center justify-between gap-4">
         <button
           type="button"
           onClick={onBack}
-          className="text-forest-green font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all"
+          className="text-luxury-ink font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all"
         >
           Back
         </button>
@@ -460,7 +460,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
           type="button"
           onClick={handleNext}
           disabled={!canAdvance()}
-          className="flex-1 md:flex-none md:min-w-48 bg-forest-green text-white font-semibold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+          className="flex-1 md:flex-none md:min-w-48 bg-luxury-ink text-white font-semibold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
         >
           Review &amp; Submit
         </button>
