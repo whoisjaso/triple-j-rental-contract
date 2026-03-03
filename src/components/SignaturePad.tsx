@@ -203,7 +203,7 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({ value, onChange, lab
                 <span className="font-bold text-sm group-hover:text-luxury-gold">Tap to Sign</span>
             </button>
             {/* Element specifically for PDF/Print when no signature is present */}
-            <div className="signature-pad-empty-line hidden print:block border-b-2 border-charcoal h-16 w-full"></div>
+            <div className="signature-pad-empty-line hidden print:block border-b-2 border-luxury-ink h-16 w-full"></div>
         </>
       )}
     </div>

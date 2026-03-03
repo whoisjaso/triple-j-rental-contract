@@ -259,7 +259,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
             <div className="border-b-2 border-luxury-ink pb-2">
               <p
                 className="text-luxury-ink"
-                style={{ fontFamily: '"Dancing Script", cursive', fontSize: '2rem', lineHeight: '1.3' }}
+                style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: '2rem', lineHeight: '1.3' }}
               >
                 {typedSignatureName}
               </p>

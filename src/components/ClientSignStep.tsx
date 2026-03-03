@@ -223,7 +223,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
     canvas.height = 80
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     if (typedSignatureName) {
-      ctx.font = '48px "Dancing Script", cursive'
+      ctx.font = 'italic 48px "Cormorant Garamond", serif'
       ctx.fillStyle = '#000000'
       ctx.fillText(typedSignatureName, 10, 60)
     }
@@ -236,7 +236,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
     canvas.height = 80
     const ctx = canvas.getContext('2d')
     if (!ctx) return ''
-    ctx.font = '48px "Dancing Script", cursive'
+    ctx.font = 'italic 48px "Cormorant Garamond", serif'
     ctx.fillStyle = '#000000'
     ctx.fillText(typedSignatureName, 10, 60)
     return canvas.toDataURL('image/jpeg', 0.8)
@@ -354,7 +354,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
                 <div className="border-b-2 border-luxury-ink pb-2 mt-1">
                   <p
                     className="text-luxury-ink"
-                    style={{ fontFamily: '"Dancing Script", cursive', fontSize: '2rem', lineHeight: '1.3' }}
+                    style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: '2rem', lineHeight: '1.3' }}
                   >
                     {typedSignatureName}
                   </p>
