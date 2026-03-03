@@ -132,11 +132,11 @@ export default function ClientSign() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-light-gray flex flex-col items-center justify-center px-6">
-        <div className="text-3xl font-bold text-gold tracking-widest mb-1">JJAI</div>
-        <div className="text-sm font-semibold text-forest-green mb-8">Triple J Auto Investment LLC</div>
+      <div className="min-h-screen bg-luxury-bg flex flex-col items-center justify-center px-6">
+        <div className="text-3xl font-bold text-luxury-gold tracking-widest mb-1">JJAI</div>
+        <div className="text-sm font-semibold text-luxury-ink mb-8">Triple J Auto Investment LLC</div>
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-3 border-forest-green border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-3 border-luxury-gold border-t-transparent rounded-full animate-spin" />
           <p className="text-gray-500 text-sm">Loading your agreement&hellip;</p>
         </div>
       </div>
@@ -146,16 +146,16 @@ export default function ClientSign() {
   // Network error state (not an expired token — that navigates away)
   if (error || !agreementData) {
     return (
-      <div className="min-h-screen bg-light-gray flex flex-col items-center justify-center px-6">
-        <div className="text-3xl font-bold text-gold tracking-widest mb-1">JJAI</div>
-        <div className="text-sm font-semibold text-forest-green mb-8">Triple J Auto Investment LLC</div>
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 px-8 py-10 max-w-sm w-full text-center">
-          <p className="text-charcoal font-semibold mb-2">Something went wrong.</p>
+      <div className="min-h-screen bg-luxury-bg flex flex-col items-center justify-center px-6">
+        <div className="text-3xl font-bold text-luxury-gold tracking-widest mb-1">JJAI</div>
+        <div className="text-sm font-semibold text-luxury-ink mb-8">Triple J Auto Investment LLC</div>
+        <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 px-8 py-10 max-w-sm w-full text-center">
+          <p className="text-luxury-ink font-semibold mb-2">Something went wrong.</p>
           <p className="text-gray-500 text-sm mb-6">Please check your connection and try again.</p>
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="w-full bg-forest-green text-white font-semibold py-3 px-6 rounded-lg text-base hover:bg-opacity-90 active:scale-95 transition-all"
+            className="w-full bg-luxury-ink text-white font-semibold py-3 px-6 rounded-lg text-base hover:bg-opacity-90 active:scale-95 transition-all"
           >
             Try Again
           </button>
@@ -165,11 +165,11 @@ export default function ClientSign() {
   }
 
   return (
-    <div className="min-h-screen bg-light-gray">
+    <div className="min-h-screen bg-luxury-bg">
       {/* Branded header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 text-center shadow-sm">
-        <div className="text-2xl font-bold text-gold tracking-widest leading-none">JJAI</div>
-        <div className="text-sm font-semibold text-forest-green mt-0.5">Triple J Auto Investment LLC</div>
+      <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center shadow-sm">
+        <div className="text-2xl font-bold text-luxury-gold tracking-widest leading-none">JJAI</div>
+        <div className="text-sm font-semibold text-luxury-ink mt-0.5">Triple J Auto Investment LLC</div>
       </header>
 
       {/* Wizard */}

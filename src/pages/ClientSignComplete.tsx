@@ -7,34 +7,34 @@ export default function ClientSignComplete() {
   void token
 
   return (
-    <div className="min-h-screen bg-light-gray flex flex-col">
+    <div className="min-h-screen bg-luxury-bg flex flex-col">
       {/* Branded header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 text-center shadow-sm">
-        <div className="text-2xl font-bold text-gold tracking-widest leading-none">JJAI</div>
-        <div className="text-sm font-semibold text-forest-green mt-0.5">Triple J Auto Investment LLC</div>
+      <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center shadow-sm">
+        <div className="text-2xl font-bold text-luxury-gold tracking-widest leading-none">JJAI</div>
+        <div className="text-sm font-semibold text-luxury-ink mt-0.5">Triple J Auto Investment LLC</div>
       </header>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 max-w-sm w-full px-8 py-10 flex flex-col items-center text-center">
+        <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 max-w-sm w-full px-8 py-10 flex flex-col items-center text-center">
 
           {/* Brand mark */}
           <div className="mb-6">
-            <div className="text-3xl font-bold text-gold tracking-widest leading-none">JJAI</div>
-            <div className="text-xs font-semibold text-forest-green mt-0.5 tracking-wide">
+            <div className="text-3xl font-bold text-luxury-gold tracking-widest leading-none">JJAI</div>
+            <div className="text-xs font-semibold text-luxury-ink mt-0.5 tracking-wide">
               Triple J Auto Investment LLC
             </div>
           </div>
 
           {/* Success icon */}
           <CircleCheck
-            className="mb-5 text-forest-green"
+            className="mb-5 text-luxury-gold"
             size={64}
             strokeWidth={1.5}
           />
 
           {/* Heading */}
-          <h1 className="text-2xl font-bold text-forest-green mb-3">
+          <h1 className="text-2xl font-bold text-luxury-ink mb-3">
             Agreement Signed Successfully
           </h1>
 
@@ -51,7 +51,7 @@ export default function ClientSignComplete() {
             <p className="text-xs text-gray-400 mb-1">Questions? Contact us at</p>
             <a
               href="tel:+18324005294"
-              className="text-forest-green font-semibold text-sm hover:underline"
+              className="text-luxury-gold font-semibold text-sm hover:underline"
             >
               (832) 400-5294
             </a>
