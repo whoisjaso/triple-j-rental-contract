@@ -47,7 +47,7 @@ export default function AgreementList() {
         <button
           type="button"
           onClick={() => navigate('/admin/agreements/new')}
-          className="bg-luxury-ink text-white px-4 py-2 rounded font-medium hover:opacity-90 transition-opacity"
+          className="btn-primary"
         >
           New Agreement
         </button>
@@ -59,7 +59,7 @@ export default function AgreementList() {
           <button
             type="button"
             onClick={() => navigate('/admin/agreements/new')}
-            className="bg-luxury-ink text-white px-6 py-2 rounded font-medium hover:opacity-90 transition-opacity"
+            className="btn-primary"
           >
             New Agreement
           </button>
@@ -80,7 +80,7 @@ export default function AgreementList() {
                 <tr
                   key={a.id}
                   onClick={() => navigate(`/admin/agreements/${a.id}`)}
-                  className="border-b border-luxury-ink/10 hover:bg-luxury-bg/30 cursor-pointer transition-colors"
+                  className="border-b border-luxury-ink/10 hover:bg-luxury-gold/5 cursor-pointer transition-colors"
                 >
                   <td className="px-4 py-3 font-medium text-luxury-ink">{a.agreement_number}</td>
                   <td className="px-4 py-3 text-luxury-ink">{a.renter_name || '\u2014'}</td>

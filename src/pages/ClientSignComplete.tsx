@@ -16,10 +16,10 @@ export default function ClientSignComplete() {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 max-w-sm w-full px-8 py-10 flex flex-col items-center text-center">
+        <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 max-w-sm w-full px-8 py-10 flex flex-col items-center text-center animate-fadeInUp">
 
           {/* Brand mark */}
-          <div className="mb-6">
+          <div className="mb-6 animate-fadeInUp">
             <img src="/logo-crest.png" alt="JJAI" className="h-[80px] w-auto" />
             <div className="text-xs font-semibold text-luxury-ink mt-1 tracking-wide">
               Triple J Auto Investment LLC
@@ -28,7 +28,7 @@ export default function ClientSignComplete() {
 
           {/* Success icon */}
           <CircleCheck
-            className="mb-5 text-luxury-gold"
+            className="mb-5 text-luxury-gold animate-scaleIn"
             size={64}
             strokeWidth={1.5}
           />

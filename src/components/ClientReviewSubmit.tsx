@@ -169,7 +169,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden animate-fadeInUp">
       {/* Header */}
       <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
         <h2 className="text-xl font-bold text-luxury-ink">Review &amp; Submit</h2>
@@ -313,7 +313,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
           type="button"
           onClick={onBack}
           disabled={submitting}
-          className="text-luxury-ink font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all disabled:opacity-40"
+          className="btn-secondary"
         >
           Back
         </button>
@@ -321,7 +321,7 @@ export default function ClientReviewSubmit({ onBack, agreementData, token }: Cli
           type="button"
           onClick={handleSubmit}
           disabled={submitting}
-          className="flex-1 md:flex-none md:min-w-48 bg-luxury-ink text-white font-bold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-2"
+          className="btn-primary flex-1 md:flex-none md:min-w-48"
         >
           {submitting ? (
             <>

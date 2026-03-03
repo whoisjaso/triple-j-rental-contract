@@ -29,7 +29,7 @@ export default function AgreementCreate() {
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
+    <div className="p-8 max-w-4xl mx-auto animate-fadeInUp">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-luxury-ink">New Agreement</h1>
       </div>
@@ -164,14 +164,14 @@ export default function AgreementCreate() {
           type="button"
           onClick={handleSave}
           disabled={isSaving}
-          className="bg-luxury-ink text-white px-6 py-2 rounded font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="btn-primary"
         >
           {isSaving ? 'Saving...' : 'Save Agreement'}
         </button>
         <button
           type="button"
           onClick={handleCancel}
-          className="text-gray-600 hover:text-luxury-ink px-4 py-2 font-medium transition-colors"
+          className="btn-secondary"
         >
           Cancel
         </button>

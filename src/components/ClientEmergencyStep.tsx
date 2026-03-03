@@ -57,7 +57,7 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden animate-fadeInUp">
       {/* Header */}
       <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
         <h2 className="text-xl font-bold text-luxury-ink">Emergency Contact</h2>
@@ -149,13 +149,13 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
           <button
             type="button"
             onClick={onBack}
-            className="text-luxury-ink font-semibold text-base py-3 px-5 rounded-xl hover:bg-gray-100 active:scale-95 transition-all"
+            className="btn-secondary"
           >
             Back
           </button>
           <button
             type="submit"
-            className="flex-1 md:flex-none md:min-w-48 bg-luxury-ink text-white font-semibold py-3 px-6 rounded-xl text-base hover:bg-opacity-90 active:scale-95 transition-all shadow-sm"
+            className="btn-primary flex-1 md:flex-none md:min-w-48"
           >
             Continue
           </button>

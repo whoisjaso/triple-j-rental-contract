@@ -201,7 +201,7 @@ export default function LinkShareModal({
                     className={`shrink-0 flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       copied
                         ? 'bg-green-100 text-green-700 border border-green-200'
-                        : 'bg-luxury-ink text-white hover:opacity-90'
+                        : 'btn-dark'
                     }`}
                     aria-label={copied ? 'Link copied' : 'Copy link'}
                   >
@@ -290,7 +290,7 @@ export default function LinkShareModal({
                 type="button"
                 onClick={handleGenerate}
                 disabled={loading}
-                className="bg-luxury-ink text-white px-6 py-2.5 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2 mx-auto"
+                className="btn-primary mx-auto"
               >
                 {loading ? (
                   <>
@@ -313,7 +313,7 @@ export default function LinkShareModal({
           <button
             type="button"
             onClick={onClose}
-            className="w-full bg-luxury-ink text-white py-2.5 rounded-lg font-medium hover:opacity-90 transition-opacity"
+            className="btn-dark w-full"
           >
             Done
           </button>

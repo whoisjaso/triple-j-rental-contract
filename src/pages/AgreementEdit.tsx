@@ -117,7 +117,7 @@ export default function AgreementEdit() {
         <button
           type="button"
           onClick={() => navigate('/admin')}
-          className="text-luxury-ink font-medium hover:underline"
+          className="btn-secondary"
         >
           Back to Agreements
         </button>
@@ -126,7 +126,7 @@ export default function AgreementEdit() {
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
+    <div className="p-8 max-w-4xl mx-auto animate-fadeInUp">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold text-luxury-ink">Edit Agreement</h1>
@@ -140,7 +140,7 @@ export default function AgreementEdit() {
         <button
           type="button"
           onClick={() => navigate('/admin')}
-          className="text-luxury-ink font-medium hover:underline text-sm"
+          className="btn-secondary"
         >
           Back to Agreements
         </button>
@@ -293,7 +293,7 @@ export default function AgreementEdit() {
             type="button"
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-luxury-ink text-white px-6 py-2 rounded font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="btn-dark"
           >
             {isSaving ? 'Saving...' : 'Save Changes'}
           </button>
@@ -309,8 +309,7 @@ export default function AgreementEdit() {
           <button
             type="button"
             onClick={() => setShowLinkModal(true)}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded font-medium text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#b89b5e' }}
+            className="btn-primary"
           >
             <Share2 className="w-4 h-4" />
             {status === 'sent' || status === 'viewed' ? 'View Share Link' : 'Send to Client'}
@@ -320,7 +319,7 @@ export default function AgreementEdit() {
         <button
           type="button"
           onClick={() => navigate('/admin')}
-          className="text-gray-600 hover:text-luxury-ink px-4 py-2 font-medium transition-colors"
+          className="btn-secondary"
         >
           Back to Agreements
         </button>

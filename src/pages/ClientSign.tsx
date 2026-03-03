@@ -133,7 +133,7 @@ export default function ClientSign() {
   if (loading) {
     return (
       <div className="min-h-screen bg-luxury-bg flex flex-col items-center justify-center px-6">
-        <img src="/logo-crest.png" alt="JJAI" className="h-[120px] w-auto mb-2" />
+        <img src="/logo-crest.png" alt="JJAI" className="h-[120px] w-auto mb-2 animate-scaleIn" />
         <div className="text-sm font-semibold text-luxury-ink mb-8">Triple J Auto Investment LLC</div>
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-3 border-luxury-gold border-t-transparent rounded-full animate-spin" />
@@ -155,7 +155,7 @@ export default function ClientSign() {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="w-full bg-luxury-ink text-white font-semibold py-3 px-6 rounded-lg text-base hover:bg-opacity-90 active:scale-95 transition-all"
+            className="btn-primary w-full"
           >
             Try Again
           </button>

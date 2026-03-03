@@ -10,7 +10,7 @@ export default function ExpiredPage() {
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 w-full max-w-sm px-8 py-8 text-center space-y-5">
+      <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 w-full max-w-sm px-8 py-8 text-center space-y-5 animate-fadeInUp">
         {/* Icon */}
         <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mx-auto">
           <svg
