@@ -79,7 +79,7 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
               placeholder="Contact's full name"
               autoComplete="off"
               {...register('emergencyName')}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
             />
             {errors.emergencyName && (
               <p className="text-alert-red text-sm mt-1">{errors.emergencyName.message}</p>
@@ -99,7 +99,7 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
               autoComplete="off"
               value={watch('emergencyPhone')}
               onChange={(e) => setValue('emergencyPhone', formatPhone(e.target.value), { shouldValidate: true })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
             />
             {errors.emergencyPhone && (
               <p className="text-alert-red text-sm mt-1">{errors.emergencyPhone.message}</p>
@@ -114,7 +114,7 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
             <select
               id="emergencyRelation"
               {...register('emergencyRelation')}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors bg-white"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors bg-white input-smooth"
             >
               <option value="">Select relationship...</option>
               {RELATIONSHIP_OPTIONS.map((opt) => (
@@ -138,7 +138,7 @@ export default function ClientEmergencyStep({ onNext, onBack }: ClientEmergencyS
                 placeholder="e.g. Neighbor, Coworker"
                 autoComplete="off"
                 {...register('emergencyRelationOther')}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
               />
             </div>
           )}

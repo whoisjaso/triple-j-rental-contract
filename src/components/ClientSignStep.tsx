@@ -346,7 +346,7 @@ export default function ClientSignStep({ onNext, onBack }: ClientSignStepProps) 
                   onChange={(e) => { setTypedSignatureName(e.target.value); setValidationError(null) }}
                   placeholder="Your full legal name"
                   autoComplete="off"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
                 />
               </div>
               {/* Live preview */}

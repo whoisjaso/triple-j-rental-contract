@@ -52,7 +52,7 @@ function Field({ label, name, type = 'text', placeholder, error, required = true
         autoComplete="off"
         inputMode={inputMode}
         {...register(name)}
-        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
       />
       {error && (
         <p className="text-alert-red text-sm mt-1">{error}</p>
@@ -61,8 +61,8 @@ function Field({ label, name, type = 'text', placeholder, error, required = true
   )
 }
 
-const inputClassName = "w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
-const selectClassName = "w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors bg-white"
+const inputClassName = "w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
+const selectClassName = "w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors bg-white input-smooth"
 
 export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalStepProps) {
   const clientData = useClientSignStore((s) => s.clientData)

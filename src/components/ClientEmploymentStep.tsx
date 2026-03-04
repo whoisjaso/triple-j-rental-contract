@@ -62,7 +62,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
               placeholder="e.g. ABC Transportation LLC"
               autoComplete="organization"
               {...register('employerName')}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
             />
             {errors.employerName && (
               <p className="text-alert-red text-sm mt-1">{errors.employerName.message}</p>
@@ -82,7 +82,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
               autoComplete="off"
               value={watch('employerPhone')}
               onChange={(e) => setValue('employerPhone', formatPhone(e.target.value), { shouldValidate: true })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
             />
             {errors.employerPhone && (
               <p className="text-alert-red text-sm mt-1">{errors.employerPhone.message}</p>
@@ -102,7 +102,7 @@ export default function ClientEmploymentStep({ onNext, onBack }: ClientEmploymen
               autoComplete="off"
               value={watch('monthlyIncome')}
               onChange={(e) => setValue('monthlyIncome', formatCurrency(e.target.value), { shouldValidate: true })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:border-luxury-gold transition-colors placeholder:text-gray-400 input-smooth"
             />
             {errors.monthlyIncome && (
               <p className="text-alert-red text-sm mt-1">{errors.monthlyIncome.message}</p>
