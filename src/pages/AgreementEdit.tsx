@@ -145,20 +145,22 @@ export default function AgreementEdit() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto animate-fadeInUp">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
+      <div className="relative mb-6">
+        <div className="flex flex-col items-center gap-2">
           <h1 className="text-2xl font-bold text-luxury-ink">Edit Agreement</h1>
-          <span className="inline-block bg-luxury-gold text-white px-3 py-1 rounded text-sm font-bold">
-            {agreementNum}
-          </span>
-          <span className={`inline-block px-2 py-0.5 rounded text-xs font-semibold capitalize ${statusColors[status] || 'bg-gray-200 text-gray-700'}`}>
-            {status}
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="inline-block bg-luxury-gold text-white px-3 py-1 rounded text-sm font-bold">
+              {agreementNum}
+            </span>
+            <span className={`inline-block px-2 py-0.5 rounded text-xs font-semibold capitalize ${statusColors[status] || 'bg-gray-200 text-gray-700'}`}>
+              {status}
+            </span>
+          </div>
         </div>
         <button
           type="button"
           onClick={() => navigate('/admin')}
-          className="btn-secondary"
+          className="btn-secondary absolute right-0 top-1/2 -translate-y-1/2"
         >
           Back to Agreements
         </button>

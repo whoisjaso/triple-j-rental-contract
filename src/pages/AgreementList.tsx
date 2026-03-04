@@ -42,12 +42,12 @@ export default function AgreementList() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-luxury-ink">Agreements</h2>
+      <div className="relative mb-6">
+        <h2 className="text-2xl font-bold text-luxury-ink text-center">Agreements</h2>
         <button
           type="button"
           onClick={() => navigate('/admin/agreements/new')}
-          className="btn-primary"
+          className="btn-primary absolute right-0 top-1/2 -translate-y-1/2"
         >
           New Agreement
         </button>

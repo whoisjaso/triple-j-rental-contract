@@ -117,7 +117,7 @@ export default function ClientPersonalStep({ onNext, onBack }: ClientPersonalSte
   return (
     <div className="bg-white rounded-2xl card-float border border-luxury-ink/10 overflow-hidden animate-fadeInUp">
       {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10">
+      <div className="px-6 pt-6 pb-4 border-b border-luxury-ink/10 text-center">
         <h2 className="text-xl font-bold text-luxury-ink">Personal Information</h2>
         <p className="text-gray-600 text-sm mt-1">
           Please enter your information exactly as it appears on your driver&apos;s license.

@@ -49,9 +49,7 @@ export default function AgreementCreate() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto animate-fadeInUp">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-luxury-ink">New Agreement</h1>
-      </div>
+      <h1 className="text-2xl font-bold text-luxury-ink text-center mb-6">New Agreement</h1>
 
       <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-6">

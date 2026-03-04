@@ -172,7 +172,7 @@ export default function ClientSign() {
     <div className="min-h-screen bg-luxury-bg">
       {/* Branded header */}
       <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center card-float">
-        <img src="/logo-crest.png" alt="JJAI" className="h-[48px] w-auto" />
+        <img src="/logo-crest.png" alt="JJAI" className="h-[48px] w-auto mx-auto block" />
         <div className="text-sm font-semibold text-luxury-ink mt-0.5">Triple J Auto Investment LLC</div>
       </header>
 

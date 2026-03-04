@@ -49,7 +49,7 @@ export default function ClientReviewStep({ agreementData, onNext }: ClientReview
       </div>
 
       {/* Header */}
-      <div className="px-6 pt-2 pb-4 border-b border-luxury-ink/10">
+      <div className="px-6 pt-2 pb-4 border-b border-luxury-ink/10 text-center">
         <h2 className="text-xl font-bold text-luxury-ink">Review Your Agreement</h2>
         <p className="text-gray-500 text-sm mt-1">
           Please review the terms of your vehicle rental agreement below.

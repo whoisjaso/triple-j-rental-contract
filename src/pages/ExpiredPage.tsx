@@ -2,7 +2,7 @@ export default function ExpiredPage() {
   return (
     <div className="min-h-screen bg-luxury-bg flex flex-col items-center justify-center px-6 py-12">
       <div className="text-center mb-8">
-        <img src="/logo-crest.png" alt="Triple J" className="h-[80px] w-auto mb-4" />
+        <img src="/logo-crest.png" alt="Triple J" className="h-[80px] w-auto mb-4 mx-auto block" />
         <p className="text-sm font-semibold text-gray-500 mt-1">Triple J Auto Investment LLC</p>
       </div>
 
