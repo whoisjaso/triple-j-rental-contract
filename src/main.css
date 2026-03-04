@@ -12,11 +12,18 @@
   --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
 }
 
-/* Print color fidelity */
+/* Buttery-smooth scrolling & tap behavior */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-luxury-bg);
   color: var(--color-luxury-ink);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
   -webkit-print-color-adjust: exact !important;
   print-color-adjust: exact !important;
 }
@@ -51,6 +58,23 @@ body {
   animation-delay: 0.3s;
 }
 
+/* ─── iOS-style Floating Cards ─── */
+.card-float {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 12px 32px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-float-hover:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 16px 40px rgba(0, 0, 0, 0.06);
+}
+
 /* ─── Luxury Button Styles ─── */
 .btn-primary {
   display: inline-flex;
@@ -67,7 +91,7 @@ body {
   border-radius: 0.75rem;
   border: none;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 2px 8px rgba(184, 155, 94, 0.25);
 }
 .btn-primary:hover {
@@ -99,7 +123,7 @@ body {
   border: 1px solid rgba(26, 26, 26, 0.15);
   border-radius: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s ease-out;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .btn-secondary:hover {
   border-color: rgba(26, 26, 26, 0.35);
@@ -129,7 +153,7 @@ body {
   border-radius: 0.75rem;
   border: none;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 2px 8px rgba(26, 26, 26, 0.15);
 }
 .btn-dark:hover {
@@ -160,6 +184,17 @@ body {
 .legal-input:focus {
   border-bottom-color: #b89b5e;
   box-shadow: 0 2px 0 0 rgba(184, 155, 94, 0.4);
+}
+
+/* ─── Smooth Input Focus (client forms) ─── */
+.input-smooth {
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+.input-smooth:focus {
+  box-shadow:
+    0 0 0 3px rgba(184, 155, 94, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Print Styles (Browser Print) */
