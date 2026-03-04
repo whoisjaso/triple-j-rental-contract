@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { Share2, CheckCircle2 } from 'lucide-react'
+import { Share2, CheckCircle2, Loader2 } from 'lucide-react'
 import { useAgreementStore } from '../stores/agreementStore'
 import { getAgreement, updateAgreement, getAuditLog } from '../lib/agreements'
+import { decodeVin } from '../lib/vinDecode'
 import { Section } from '../components/Section'
 import { InputLine } from '../components/InputLine'
 import LinkShareModal from '../components/LinkShareModal'
@@ -63,8 +64,25 @@ export default function AgreementEdit() {
   const [showLinkModal, setShowLinkModal] = useState(false)
   const [currentToken, setCurrentToken] = useState<string | null>(null)
   const [currentTokenExpiry, setCurrentTokenExpiry] = useState<string | null>(null)
+  const [vinLoading, setVinLoading] = useState(false)
+  const [vinError, setVinError] = useState<string | null>(null)
 
   const isSigned = status === 'signed' || status === 'completed'
+
+  async function handleVinDecode() {
+    const vin = data.vehicle.vin.trim()
+    if (!vin) { setVinError('Please enter a VIN first.'); return }
+    setVinLoading(true)
+    setVinError(null)
+    try {
+      const result = await decodeVin(vin)
+      updateField('vehicle', 'yearMakeModel', result.yearMakeModel)
+    } catch (err: any) {
+      setVinError(err.message || 'VIN decode failed.')
+    } finally {
+      setVinLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (!id) return
@@ -172,7 +190,26 @@ export default function AgreementEdit() {
         <Section title="Vehicle Information" number="SECTION 3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Year / Make / Model" value={data.vehicle.yearMakeModel} onChange={(v) => updateField('vehicle', 'yearMakeModel', v)} className="col-span-1 md:col-span-2" readOnly={isSigned} />
-            <InputLine label="VIN" value={data.vehicle.vin} onChange={(v) => updateField('vehicle', 'vin', v)} readOnly={isSigned} />
+            {isSigned ? (
+              <InputLine label="VIN" value={data.vehicle.vin} onChange={(v) => updateField('vehicle', 'vin', v)} readOnly />
+            ) : (
+              <div className="flex flex-col gap-1">
+                <div className="flex items-end gap-2">
+                  <div className="flex-1">
+                    <InputLine label="VIN" value={data.vehicle.vin} onChange={(v) => { updateField('vehicle', 'vin', v); setVinError(null) }} />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleVinDecode}
+                    disabled={vinLoading}
+                    className="btn-primary text-sm px-3 py-1.5 mb-0.5"
+                  >
+                    {vinLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Decode'}
+                  </button>
+                </div>
+                {vinError && <p className="text-alert-red text-xs">{vinError}</p>}
+              </div>
+            )}
             <InputLine label="License Plate" value={data.vehicle.plateNumber} onChange={(v) => updateField('vehicle', 'plateNumber', v)} readOnly={isSigned} />
             <InputLine label="Exterior Color" value={data.vehicle.color} onChange={(v) => updateField('vehicle', 'color', v)} readOnly={isSigned} />
             <InputLine label="Current Odometer" value={data.vehicle.odometer} onChange={(v) => updateField('vehicle', 'odometer', v)} readOnly={isSigned} />

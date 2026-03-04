@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { Loader2 } from 'lucide-react'
 import { useAgreementStore } from '../stores/agreementStore'
 import { createAgreement } from '../lib/agreements'
+import { decodeVin } from '../lib/vinDecode'
 import { Section } from '../components/Section'
 import { InputLine } from '../components/InputLine'
 
@@ -9,6 +11,23 @@ export default function AgreementCreate() {
   const navigate = useNavigate()
   const { data, updateField, reset, isSaving, setSaving } = useAgreementStore()
   const [error, setError] = useState<string | null>(null)
+  const [vinLoading, setVinLoading] = useState(false)
+  const [vinError, setVinError] = useState<string | null>(null)
+
+  async function handleVinDecode() {
+    const vin = data.vehicle.vin.trim()
+    if (!vin) { setVinError('Please enter a VIN first.'); return }
+    setVinLoading(true)
+    setVinError(null)
+    try {
+      const result = await decodeVin(vin)
+      updateField('vehicle', 'yearMakeModel', result.yearMakeModel)
+    } catch (err: any) {
+      setVinError(err.message || 'VIN decode failed.')
+    } finally {
+      setVinLoading(false)
+    }
+  }
 
   async function handleSave() {
     setSaving(true)
@@ -54,7 +73,22 @@ export default function AgreementCreate() {
         <Section title="Vehicle Information" number="SECTION 3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <InputLine label="Year / Make / Model" value={data.vehicle.yearMakeModel} onChange={(v) => updateField('vehicle', 'yearMakeModel', v)} className="col-span-1 md:col-span-2" />
-            <InputLine label="VIN" value={data.vehicle.vin} onChange={(v) => updateField('vehicle', 'vin', v)} />
+            <div className="flex flex-col gap-1">
+              <div className="flex items-end gap-2">
+                <div className="flex-1">
+                  <InputLine label="VIN" value={data.vehicle.vin} onChange={(v) => { updateField('vehicle', 'vin', v); setVinError(null) }} />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleVinDecode}
+                  disabled={vinLoading}
+                  className="btn-primary text-sm px-3 py-1.5 mb-0.5"
+                >
+                  {vinLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Decode'}
+                </button>
+              </div>
+              {vinError && <p className="text-alert-red text-xs">{vinError}</p>}
+            </div>
             <InputLine label="License Plate" value={data.vehicle.plateNumber} onChange={(v) => updateField('vehicle', 'plateNumber', v)} />
             <InputLine label="Exterior Color" value={data.vehicle.color} onChange={(v) => updateField('vehicle', 'color', v)} />
             <InputLine label="Current Odometer" value={data.vehicle.odometer} onChange={(v) => updateField('vehicle', 'odometer', v)} />
