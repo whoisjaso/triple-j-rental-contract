@@ -18,6 +18,10 @@ function WizardInner({ agreementData, token }: { agreementData: AgreementData; t
   const step = useClientSignStore((s) => s.step)
   const setStep = useClientSignStore((s) => s.setStep)
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [step])
+
   function onNext() {
     setStep(step + 1)
   }

@@ -65,7 +65,7 @@ export default function AgreementList() {
           </button>
         </div>
       ) : (
-        <div className="bg-white rounded-sm border border-luxury-ink/10 overflow-hidden">
+        <div className="bg-white rounded-xl card-float border border-luxury-ink/10 overflow-hidden">
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-luxury-ink/10">

@@ -26,7 +26,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
                 {/* Left connector line */}
                 {index > 0 && (
                   <div
-                    className={`flex-1 h-0.5 ${
+                    className={`flex-1 h-0.5 transition-all duration-300 ${
                       isCompleted || isCurrent ? 'bg-luxury-gold' : 'bg-gray-300'
                     }`}
                   />
@@ -35,7 +35,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
                 {/* Step circle */}
                 <div
                   className={`
-                    flex-shrink-0 flex items-center justify-center rounded-full font-bold text-sm transition-all
+                    flex-shrink-0 flex items-center justify-center rounded-full font-bold text-sm transition-all duration-300
                     ${isCompleted
                       ? 'w-8 h-8 bg-luxury-gold text-white'
                       : isCurrent
@@ -63,7 +63,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
                 {/* Right connector line */}
                 {index < totalSteps - 1 && (
                   <div
-                    className={`flex-1 h-0.5 ${
+                    className={`flex-1 h-0.5 transition-all duration-300 ${
                       isCompleted ? 'bg-luxury-gold' : 'bg-gray-300'
                     }`}
                   />
@@ -72,7 +72,7 @@ export default function WizardProgress({ currentStep, totalSteps, stepLabels }: 
 
               {/* Label */}
               <span
-                className={`mt-1.5 text-xs font-medium text-center leading-tight ${
+                className={`mt-1.5 text-xs font-medium text-center leading-tight transition-colors duration-300 ${
                   isCurrent
                     ? 'text-luxury-gold'
                     : isFuture
