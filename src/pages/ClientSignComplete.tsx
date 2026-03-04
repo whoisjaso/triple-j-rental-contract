@@ -9,14 +9,14 @@ export default function ClientSignComplete() {
   return (
     <div className="min-h-screen bg-luxury-bg flex flex-col">
       {/* Branded header */}
-      <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center shadow-sm">
+      <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center card-float">
         <img src="/logo-crest.png" alt="JJAI" className="h-[48px] w-auto" />
         <div className="text-sm font-semibold text-luxury-ink mt-0.5">Triple J Auto Investment LLC</div>
       </header>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 max-w-sm w-full px-8 py-10 flex flex-col items-center text-center animate-fadeInUp">
+        <div className="bg-white rounded-2xl card-float border border-luxury-ink/10 max-w-sm w-full px-8 py-10 flex flex-col items-center text-center animate-fadeInUp">
 
           {/* Brand mark */}
           <div className="mb-6 animate-fadeInUp">

@@ -39,7 +39,7 @@ export default function ClientReviewStep({ agreementData, onNext }: ClientReview
       : rentalTerm.ratePeriod
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 overflow-hidden animate-fadeInUp">
+    <div className="bg-white rounded-2xl card-float border border-luxury-ink/10 overflow-hidden animate-fadeInUp">
       {/* Hero brand crest */}
       <div className="flex flex-col items-center pt-8 pb-4">
         <img src="/logo-crest.png" alt="JJAI" className="h-[120px] w-auto mb-2" />

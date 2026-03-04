@@ -149,7 +149,7 @@ export default function ClientSign() {
       <div className="min-h-screen bg-luxury-bg flex flex-col items-center justify-center px-6">
         <img src="/logo-crest.png" alt="JJAI" className="h-[120px] w-auto mb-2" />
         <div className="text-sm font-semibold text-luxury-ink mb-8">Triple J Auto Investment LLC</div>
-        <div className="bg-white rounded-2xl shadow-sm border border-luxury-ink/10 px-8 py-10 max-w-sm w-full text-center">
+        <div className="bg-white rounded-2xl card-float border border-luxury-ink/10 px-8 py-10 max-w-sm w-full text-center">
           <p className="text-luxury-ink font-semibold mb-2">Something went wrong.</p>
           <p className="text-gray-500 text-sm mb-6">Please check your connection and try again.</p>
           <button
@@ -167,7 +167,7 @@ export default function ClientSign() {
   return (
     <div className="min-h-screen bg-luxury-bg">
       {/* Branded header */}
-      <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center shadow-sm">
+      <header className="bg-white border-b border-luxury-ink/10 px-6 py-4 text-center card-float">
         <img src="/logo-crest.png" alt="JJAI" className="h-[48px] w-auto" />
         <div className="text-sm font-semibold text-luxury-ink mt-0.5">Triple J Auto Investment LLC</div>
       </header>
