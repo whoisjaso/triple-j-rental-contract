@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { Share2, CheckCircle2, Loader2 } from 'lucide-react'
+import { Share2, CheckCircle2, Loader2, Printer, Download, RefreshCw } from 'lucide-react'
 import { useAgreementStore } from '../stores/agreementStore'
-import { getAgreement, updateAgreement, getAuditLog } from '../lib/agreements'
+import { getAgreement, updateAgreement, getAuditLog, renewAgreement, getAgreementRenewals, logExportAction } from '../lib/agreements'
 import { decodeVin } from '../lib/vinDecode'
 import { Section } from '../components/Section'
 import { InputLine } from '../components/InputLine'
 import LinkShareModal from '../components/LinkShareModal'
+import AgreementPrintView from '../components/AgreementPrintView'
 import type { AgreementData } from '../types'
 
 const ACKNOWLEDGMENT_SECTION_LABELS: Record<string, string> = {
@@ -66,6 +67,10 @@ export default function AgreementEdit() {
   const [currentTokenExpiry, setCurrentTokenExpiry] = useState<string | null>(null)
   const [vinLoading, setVinLoading] = useState(false)
   const [vinError, setVinError] = useState<string | null>(null)
+  const [renewalChain, setRenewalChain] = useState<{ id: string; agreement_number: string; status: string; created_at: string; renewed_from: string | null }[]>([])
+  const [isRenewing, setIsRenewing] = useState(false)
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false)
+  const printRef = useRef<HTMLDivElement>(null)
 
   const isSigned = status === 'signed' || status === 'completed'
 
@@ -96,6 +101,7 @@ export default function AgreementEdit() {
         setCurrentToken(row.token ?? null)
         setCurrentTokenExpiry(row.token_expires_at ?? null)
         setAuditLog(log as AuditEntry[])
+        getAgreementRenewals(row.id).then(setRenewalChain).catch(() => {})
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
@@ -117,6 +123,60 @@ export default function AgreementEdit() {
       setError(err.message || 'Failed to save changes')
     } finally {
       setSaving(false)
+    }
+  }
+
+  async function handleRenew() {
+    if (!id) return
+    setIsRenewing(true)
+    try {
+      const { id: newId } = await renewAgreement(id, 'admin')
+      navigate(`/admin/agreements/${newId}`)
+    } catch (err: any) {
+      setError(err.message || 'Failed to create renewal')
+    } finally {
+      setIsRenewing(false)
+    }
+  }
+
+  function handlePrint() {
+    if (id) logExportAction(id, 'pdf_generated', 'admin').catch(() => {})
+    window.print()
+  }
+
+  async function handleDownloadPdf() {
+    if (!printRef.current || !id) return
+    setIsPdfGenerating(true)
+    try {
+      const html2canvas = (await import('html2canvas')).default
+      const { jsPDF } = await import('jspdf')
+
+      const canvas = await html2canvas(printRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      })
+
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF('p', 'mm', 'letter')
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+
+      let position = 0
+      const pageHeight = pdf.internal.pageSize.getHeight()
+
+      while (position < pdfHeight) {
+        if (position > 0) pdf.addPage()
+        pdf.addImage(imgData, 'PNG', 0, -position, pdfWidth, pdfHeight)
+        position += pageHeight
+      }
+
+      pdf.save(`${agreementNum}-Agreement.pdf`)
+      await logExportAction(id, 'downloaded', 'admin')
+    } catch (err: any) {
+      setError(err.message || 'Failed to generate PDF')
+    } finally {
+      setIsPdfGenerating(false)
     }
   }
 
@@ -355,13 +415,37 @@ export default function AgreementEdit() {
           </button>
         )}
 
+        {/* Print & Download */}
         <button
           type="button"
-          onClick={() => navigate('/admin')}
-          className="btn-secondary"
+          onClick={handlePrint}
+          className="btn-secondary flex items-center gap-1.5"
         >
-          Back to Agreements
+          <Printer className="w-4 h-4" />
+          Print
         </button>
+        <button
+          type="button"
+          onClick={handleDownloadPdf}
+          disabled={isPdfGenerating}
+          className="btn-secondary flex items-center gap-1.5"
+        >
+          {isPdfGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+          {isPdfGenerating ? 'Generating...' : 'Download PDF'}
+        </button>
+
+        {/* Renew — only for signed/completed agreements */}
+        {isSigned && (
+          <button
+            type="button"
+            onClick={handleRenew}
+            disabled={isRenewing}
+            className="btn-primary flex items-center gap-1.5"
+          >
+            {isRenewing ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+            {isRenewing ? 'Creating Renewal...' : 'Renew Agreement'}
+          </button>
+        )}
       </div>
 
       {/* LinkShareModal */}
@@ -494,6 +578,33 @@ export default function AgreementEdit() {
         </div>
       )}
 
+      {/* Renewal Chain */}
+      {renewalChain.length > 1 && (
+        <div className="bg-white rounded-sm border border-luxury-ink/10 p-6 mb-6">
+          <Section title="Agreement History">
+            <div className="space-y-2">
+              {renewalChain.map((item) => (
+                <div
+                  key={item.id}
+                  className={`flex items-center gap-3 text-sm p-2 rounded ${item.id === id ? 'bg-luxury-gold/10 font-semibold' : 'hover:bg-gray-50 cursor-pointer'}`}
+                  onClick={() => item.id !== id && navigate(`/admin/agreements/${item.id}`)}
+                >
+                  <span className="text-luxury-gold font-bold">{item.agreement_number}</span>
+                  <span className={`px-2 py-0.5 rounded text-xs font-semibold capitalize ${statusColors[item.status] || 'bg-gray-200 text-gray-700'}`}>
+                    {item.status}
+                  </span>
+                  <span className="text-gray-400 text-xs">
+                    {new Date(item.created_at).toLocaleDateString()}
+                  </span>
+                  {item.id === id && <span className="text-xs text-luxury-gold">(current)</span>}
+                  {!item.renewed_from && <span className="text-xs text-gray-400">(original)</span>}
+                </div>
+              ))}
+            </div>
+          </Section>
+        </div>
+      )}
+
       {/* Audit Log */}
       {auditLog.length > 0 && (
         <div className="bg-white rounded-sm border border-luxury-ink/10 p-6">
@@ -516,6 +627,11 @@ export default function AgreementEdit() {
           </Section>
         </div>
       )}
+
+      {/* Hidden print view for PDF generation */}
+      <div className="fixed left-[-9999px] top-0 no-print" aria-hidden="true">
+        <AgreementPrintView ref={printRef} data={data} agreementNumber={agreementNum} />
+      </div>
     </div>
   )
 }
