@@ -212,6 +212,10 @@ body {
   .avoid-break {
     page-break-inside: avoid;
   }
+  /* Hide interactive elements when printing */
+  button, nav {
+    display: none !important;
+  }
   /* Force desktop-like grid for print */
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
