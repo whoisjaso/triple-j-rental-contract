@@ -14,6 +14,7 @@ export interface Database {
           created_by: string | null
           created_at: string
           updated_at: string
+          renewed_from: string | null
         }
         Insert: {
           id?: string
@@ -25,6 +26,7 @@ export interface Database {
           created_by?: string | null
           created_at?: string
           updated_at?: string
+          renewed_from?: string | null
         }
         Update: {
           id?: string
@@ -36,6 +38,7 @@ export interface Database {
           created_by?: string | null
           created_at?: string
           updated_at?: string
+          renewed_from?: string | null
         }
         Relationships: []
       }
@@ -43,7 +46,7 @@ export interface Database {
         Row: {
           id: number
           agreement_id: string | null
-          action: 'created' | 'updated' | 'sent' | 'viewed' | 'signed' | 'pdf_generated' | 'downloaded' | 'expired'
+          action: 'created' | 'updated' | 'sent' | 'viewed' | 'signed' | 'pdf_generated' | 'downloaded' | 'expired' | 'renewed'
           actor_type: 'admin' | 'client' | 'system'
           actor_id: string | null
           ip_address: string | null
@@ -54,7 +57,7 @@ export interface Database {
         Insert: {
           id?: number
           agreement_id?: string | null
-          action: 'created' | 'updated' | 'sent' | 'viewed' | 'signed' | 'pdf_generated' | 'downloaded' | 'expired'
+          action: 'created' | 'updated' | 'sent' | 'viewed' | 'signed' | 'pdf_generated' | 'downloaded' | 'expired' | 'renewed'
           actor_type?: 'admin' | 'client' | 'system'
           actor_id?: string | null
           ip_address?: string | null
@@ -65,7 +68,7 @@ export interface Database {
         Update: {
           id?: number
           agreement_id?: string | null
-          action?: 'created' | 'updated' | 'sent' | 'viewed' | 'signed' | 'pdf_generated' | 'downloaded' | 'expired'
+          action?: 'created' | 'updated' | 'sent' | 'viewed' | 'signed' | 'pdf_generated' | 'downloaded' | 'expired' | 'renewed'
           actor_type?: 'admin' | 'client' | 'system'
           actor_id?: string | null
           ip_address?: string | null
